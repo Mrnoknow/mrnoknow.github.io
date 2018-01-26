@@ -16,6 +16,6 @@ name varchar(255),
 year int
 )       创建表空间
 alter table student drop column year;   删除列
-delete from student where name='fubiao';  删除列中的name 为fubiao的数据
+delete from student where name='fun';  删除列中的name 为fun的数据
 delete from student 在不删除表空间的情况下，删除所有列
 ```
