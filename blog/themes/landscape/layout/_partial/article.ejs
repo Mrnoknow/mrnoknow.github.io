@@ -18,14 +18,8 @@
             <a href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %></a>
           </p>
         <% } %>
-      <% } else if(page.content){ %>
-       <%- post.content %>
-      <% }else { %>
-          <%  if(post._content.slice(0,500).indexOf("```")>-1&& if(post.content.length<2000)) {%>
-                  <%- post.content %>
-          <% } else {%>
-             <%- post.content.slice(0,500) %>
-          <% } %>
+-      <% } else { %>
+-        <%- post.content %>
       <% } %>
     </div>
     <footer class="article-footer">
