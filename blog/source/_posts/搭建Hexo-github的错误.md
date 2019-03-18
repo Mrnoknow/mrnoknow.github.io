@@ -71,7 +71,7 @@ and the repository exists.
 ## 解决方法
 
 ```bash
-用低版本的git，比如1.9版本的git
+用低版本的git，比如1.9版本的git  或者执行   ssh-add ~/.ssh/自定义名
 ```
 
 
