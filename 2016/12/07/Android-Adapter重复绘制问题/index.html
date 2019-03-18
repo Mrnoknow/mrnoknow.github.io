@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Android Adapter重复绘制问题 | Fun&#39;s biog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="概述今天在实现复用Adapter的时候，我在使用AddView添加组件的时候，发现当界面上下拉动的时候，添加组件会每次增加一个，并且第一部分区域和最后一部分会重复绘制多次如图：  然后这是最尴尬的，我不知道它为什么会重复绘制，如果是刷新的话好理解，那为什么第一个和最后一个一开始就重复绘制了如此多的次数以下部分来自htt">
+<meta name="keywords" content="other">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android Adapter重复绘制问题">
+<meta property="og:url" content="https://mrnoknow.github.io/2016/12/07/Android-Adapter重复绘制问题/index.html">
+<meta property="og:site_name" content="Fun&#39;s biog">
+<meta property="og:description" content="概述今天在实现复用Adapter的时候，我在使用AddView添加组件的时候，发现当界面上下拉动的时候，添加组件会每次增加一个，并且第一部分区域和最后一部分会重复绘制多次如图：  然后这是最尴尬的，我不知道它为什么会重复绘制，如果是刷新的话好理解，那为什么第一个和最后一个一开始就重复绘制了如此多的次数以下部分来自http://www.cnblogs.com/nailperry/p/4675599.">
+<meta property="og:image" content="https://mrnoknow.github.io/images/Android%20Adapter重复绘制问题/1.gif">
+<meta property="og:image" content="https://mrnoknow.github.io/images/Android%20Adapter重复绘制问题/2.png">
+<meta property="og:image" content="https://mrnoknow.github.io/images/Android%20Adapter重复绘制问题/3.jpg">
+<meta property="og:updated_time" content="2019-03-18T06:44:47.914Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android Adapter重复绘制问题">
+<meta name="twitter:description" content="概述今天在实现复用Adapter的时候，我在使用AddView添加组件的时候，发现当界面上下拉动的时候，添加组件会每次增加一个，并且第一部分区域和最后一部分会重复绘制多次如图：  然后这是最尴尬的，我不知道它为什么会重复绘制，如果是刷新的话好理解，那为什么第一个和最后一个一开始就重复绘制了如此多的次数以下部分来自http://www.cnblogs.com/nailperry/p/4675599.">
+<meta name="twitter:image" content="https://mrnoknow.github.io/images/Android%20Adapter重复绘制问题/1.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="Fun&#39;s biog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Fun&#39;s biog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个只会搬砖，不会写博客的不入流程序猿</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mrnoknow.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Android-Adapter重复绘制问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/07/Android-Adapter重复绘制问题/" class="article-date">
+  <time datetime="2016-12-07T05:23:28.000Z" itemprop="datePublished">2016-12-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Android Adapter重复绘制问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+-        <h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>今天在实现复用Adapter的时候，我在使用AddView添加组件的时候，发现当界面上下拉动的时候，添加组件会每次增加一个，并且第一部分区域和最后一部分会重复绘制多次<br>如图：</p>
+<p><img src="/images/Android Adapter重复绘制问题/1.gif" alt=""></p>
+<p>然后这是最尴尬的，我不知道它为什么会重复绘制，如果是刷新的话好理解，那为什么第一个和最后一个一开始就重复绘制了如此多的次数<br><strong>以下部分来自<a href="http://www.cnblogs.com/nailperry/p/4675599.html" target="_blank" rel="noopener">http://www.cnblogs.com/nailperry/p/4675599.html</a></strong></p>
+<h4 id="ListView-OnMeasure方法源码"><a href="#ListView-OnMeasure方法源码" class="headerlink" title="ListView.OnMeasure方法源码"></a>ListView.OnMeasure方法源码</h4><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> childWidth = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 默认为0</span></span><br><span class="line">    <span class="keyword">int</span> childHeight = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> childState = <span class="number">0</span>;</span><br><span class="line">   </span><br><span class="line">    mItemCount = mAdapter == <span class="keyword">null</span> ? <span class="number">0</span> : mAdapter.getCount();</span><br><span class="line">    <span class="comment">// ViewMode 处于UNSPECIFIED 状态，且mAdapter.getCount() &gt; 0时绘制首项来探测大小</span></span><br><span class="line">    <span class="keyword">if</span> (mItemCount &gt; <span class="number">0</span> &amp;&amp; (widthMode == MeasureSpec.UNSPECIFIED ||</span><br><span class="line">            heightMode == MeasureSpec.UNSPECIFIED)) &#123;</span><br><span class="line">        <span class="comment">// getView(0)</span></span><br><span class="line">        <span class="keyword">final</span> View child = obtainView(<span class="number">0</span>, mIsScrap);</span><br><span class="line"></span><br><span class="line">        measureScrapChild(child, <span class="number">0</span>, widthMeasureSpec);</span><br><span class="line"></span><br><span class="line">        childWidth = child.getMeasuredWidth();</span><br><span class="line">        <span class="comment">// 更新为item0的高度</span></span><br><span class="line">        childHeight = child.getMeasuredHeight();</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     *  ViewMode 处于UNSPECIFIED 状态，当mItemCount &gt; 0时，heightSize为getView(0)的高度+ListView距离顶部和底部的距离+2*getVerticalFadingEdgeLength；</span></span><br><span class="line"><span class="comment">     *  当mItemCount==0时，childHeight=0，则heightSize返回的仅仅是ListView距离顶部和底部的距离+2*getVerticalFadingEdgeLength</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">if</span> (heightMode == MeasureSpec.UNSPECIFIED) &#123;</span><br><span class="line">        heightSize = mListPadding.top + mListPadding.bottom + childHeight +</span><br><span class="line">                getVerticalFadingEdgeLength() * <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ViewMode 处于AT_MOST 状态，绘制多个列表项以确定高度。</span></span><br><span class="line">    <span class="keyword">if</span> (heightMode == MeasureSpec.AT_MOST) &#123;</span><br><span class="line">        <span class="comment">// 会调用多个getView，这些view将不会被复用</span></span><br><span class="line">        heightSize = measureHeightOfChildren(widthMeasureSpec, <span class="number">0</span>, NO_POSITION, heightSize, <span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    setMeasuredDimension(widthSize , heightSize);</span><br><span class="line">    mWidthMeasureSpec = widthMeasureSpec;        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="measureHeightOfChildren方法的源码"><a href="#measureHeightOfChildren方法的源码" class="headerlink" title="measureHeightOfChildren方法的源码"></a>measureHeightOfChildren方法的源码</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">int</span> measureHeightOfChildren(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> startPosition, <span class="keyword">int</span> endPosition,</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> maxHeight, <span class="keyword">int</span> disallowPartialChildPosition) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> ListAdapter adapter = mAdapter;</span><br><span class="line">        <span class="keyword">if</span> (adapter == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> mListPadding.top + mListPadding.bottom;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> returnedHeight = mListPadding.top + mListPadding.bottom;</span><br><span class="line">        ...</span><br><span class="line">        View child;</span><br><span class="line">        <span class="comment">// onMeasure传递过来的endPosition==NO_POSITION，也就是-1，则令endPosition取数据源的adapter.getCount() - 1</span></span><br><span class="line">        endPosition = (endPosition == NO_POSITION) ? adapter.getCount() - 1 : endPosition;</span><br><span class="line">        <span class="keyword">final</span> AbsListView.RecycleBin recycleBin = mRecycler;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> recyle = recycleOnMeasure();</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span>[] isScrap = mIsScrap;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 从起始位置0（onMeasure中传入的是0）开始，循环地创建ItemView，并累加ItemView的高度，当高度和超过onMeasure传递过来的maxHeight（其实是测量规格中的size）时，跳出循环</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">for</span> (i = startPosition; i &lt;= endPosition; ++i) &#123;</span><br><span class="line">            child = obtainView(i, isScrap);</span><br><span class="line"></span><br><span class="line">            measureScrapChild(child, i, widthMeasureSpec);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (i &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 计算高度的时候还需将ItemView间的分隔距离考虑进来</span></span><br><span class="line">                returnedHeight += dividerHeight;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Recycle the view before we possibly return from the method</span></span><br><span class="line">            <span class="keyword">if</span> (recyle &amp;&amp; recycleBin.shouldRecycleViewType(</span><br><span class="line">                    ((LayoutParams) child.getLayoutParams()).viewType)) &#123;</span><br><span class="line">                <span class="comment">/*</span></span><br><span class="line"><span class="comment">                 *  注意，这里addScrapView方法传入的第二个参数也就是position为-1，</span></span><br><span class="line"><span class="comment">                 *  由于Layout过程中调用getScrapView方法时传入的position&gt;=0，</span></span><br><span class="line"><span class="comment">                 *  故position为-1的ScrapView都不会被回收，读懂这句话需要了解RecycleBin类，这里暂不深究。</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                recycleBin.addScrapView(child, <span class="number">-1</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            returnedHeight += child.getMeasuredHeight();</span><br><span class="line">            <span class="comment">// 循环提前终止条件</span></span><br><span class="line">            <span class="keyword">if</span> (returnedHeight &gt;= maxHeight) &#123;</span><br><span class="line">                <span class="comment">// 加上第i个的高度后returnedHeight已经超过了maxHeight，故高度探测应结束，说明最多只能容纳到第i个item</span></span><br><span class="line">                <span class="keyword">return</span> (disallowPartialChildPosition &gt;= <span class="number">0</span>) <span class="comment">// Disallowing is enabled (&gt; -1)</span></span><br><span class="line">                            &amp;&amp; (i &gt; disallowPartialChildPosition) <span class="comment">// We've past the min pos</span></span><br><span class="line">                            &amp;&amp; (prevHeightWithoutPartialChild &gt; <span class="number">0</span>) <span class="comment">// We have a prev height</span></span><br><span class="line">                            &amp;&amp; (returnedHeight != maxHeight) <span class="comment">// 第i个Item不能显示完全，即超出容器</span></span><br><span class="line">                        ? prevHeightWithoutPartialChild</span><br><span class="line">                        : maxHeight;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> ((disallowPartialChildPosition &gt;= <span class="number">0</span>) &amp;&amp; (i &gt;= disallowPartialChildPosition)) &#123;</span><br><span class="line">                prevHeightWithoutPartialChild = returnedHeight;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> returnedHeight;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>A parent view may call measure() more than once on its children. For example, the parent may measure each child once with unspecified dimensions to find out how big they want to be, then call measure() on them again with actual numbers if the sum of all the children’s unconstrained sizes is too big or too small.</li>
+<li><p>一个父视图可能多次调用子视图的measure方法，意思就是说，当ListView的OnMeasure方法计算完Item的大小，ListView的父视图将要查看此结果，然后进行判定这个结果是否能被接受，若不能，则会再次调用measureHeightOfChildren方法，从而导致getView方法的重复调用，而造成第一行和最后一行被多次绘制<br><strong>但是，那个上下拉后，隐藏的Item重现是再次被绘制还不是不是太清楚，有几张图，然后看了网上的ListView源码解释，还是很模糊，在此先贴图</strong><br><img src="/images/Android Adapter重复绘制问题/2.png" alt=""></p>
+</li>
+<li><p>上图意思很容易看懂，但是我还是无法理解重复绘制的问题，我在代码中添加的组件怎么会在重回屏幕时增加<br><img src="/images/Android Adapter重复绘制问题/3.jpg" alt=""></p>
+</li>
+<li>上图的意思就是，每次内存中只保存显示的几个Item，之后拖动后，被隐藏的Item（View）会保存到Recycler中，当再次回到原来位置时，会从Recycler中获取，感觉好像解释不了重新被绘制的问题<br><strong>总结上面2张图，就是如果你ListView中一个屏幕中有N个Item（View），你的内存中也只会产生N+1个Item（View），无论你ListView中有多少行数据，然后每当一个Item（View）移除屏幕，放在RecycleBin中的Item（View）就会去填充，然后移除的Item（View）进入RecycleBin中，如此循环往复，这里应该表达清楚的是每个Item中的信息是改变的，只是用的View那个对象，和View中的信息无关，所以尽管如此还是不能解释我代码中添加的元素越来越多问题</strong><br><strong>以上基本类似的意思，但是在以上讲解中，并没有提到getView被复用的点，相反而是为了解决此问题和OOM问题所做的解释</strong></li>
+</ul>
+<h3 id="2017-7-26更"><a href="#2017-7-26更" class="headerlink" title="2017-7-26更"></a>2017-7-26更</h3><p>  <strong>对于上面的问题，我在前几天突然豁然开朗，就是ListView中的item放进RecycleBin后，在下拉后会复用RecycleBin中的item，所以在item加一个view后，在复用中，此view还是会存在于此item中，我们每次下拉或者刷新，都只是更改item中的信息，或者图片，并没有添加过view或者其他一些组件，所以当你有item的添加组件操作，会在下面的刷新中，复用此item中的view越来越多，因为我们是在getView（）方法中进行信息或者图片加载，而每次下拉总是会调用getView(),所以添加向item添加view这一操作，证实了itme复用的实现。</strong></p>
+<h3 id="2017-8-1更"><a href="#2017-8-1更" class="headerlink" title="2017-8-1更"></a>2017-8-1更</h3><ul>
+<li>当加载第一页ListView时，会加载比第一页item多2个的item</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mrnoknow.github.io/2016/12/07/Android-Adapter重复绘制问题/" data-id="cjte069am003ccyofbez8qgn8" class="article-share-link">Share</a>
+      
+        <a href="https://mrnoknow.github.io/2016/12/07/Android-Adapter重复绘制问题/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/03/06/第一个NDK程序/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          第一个NDK程序
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/12/05/模板Adapter/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">模板Adapter</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/JVM/">JVM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/jsp/">jsp</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/Hexo/">Hexo</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/sql/">sql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/">虚拟机</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Ubuntu-server/">Ubuntu server</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统/">计算机系统</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Coding/">Coding</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二进制编码/">二进制编码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Coding/" style="font-size: 13.33px;">Coding</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/二进制编码/" style="font-size: 10px;">二进制编码</a> <a href="/tags/读书笔记/" style="font-size: 16.67px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/19/Android-视频播放自定义布局/">Android 视频播放自定义布局</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/14/Reduce-APK-Size/">Reduce APK Size</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/02/Android-4大组件特点/">Android 4大组件特点</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/28/多线程简单介绍/">多线程简单介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/20/RecyclerView简单复用适配器的实现/">RecyclerView简单复用适配器的实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Fun&#39;s biog<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'fun-7';
+  
+  var disqus_url = 'https://mrnoknow.github.io/2016/12/07/Android-Adapter重复绘制问题/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

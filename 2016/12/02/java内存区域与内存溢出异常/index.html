@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>java内存区域与内存溢出异常 | Fun&#39;s biog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="运行时数据区域  程序计数器（Program Counter Register） 是一块很小的内存空间 是当前线程所执行的字节码指示器，字节码解释器执行是通过改变它的值来选取下一跳执行命令 单核处理器在确定时刻只能执行一条线程中的指令，为了让线程切换后能恢复到正确的位置，每个线程都有一个独立的程序计数器，这类内存区域称">
+<meta name="keywords" content="读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java内存区域与内存溢出异常">
+<meta property="og:url" content="https://mrnoknow.github.io/2016/12/02/java内存区域与内存溢出异常/index.html">
+<meta property="og:site_name" content="Fun&#39;s biog">
+<meta property="og:description" content="运行时数据区域  程序计数器（Program Counter Register） 是一块很小的内存空间 是当前线程所执行的字节码指示器，字节码解释器执行是通过改变它的值来选取下一跳执行命令 单核处理器在确定时刻只能执行一条线程中的指令，为了让线程切换后能恢复到正确的位置，每个线程都有一个独立的程序计数器，这类内存区域称为“线程私有‘’ 线程执行java方法，计数器记录正在执行的虚拟机字节码指令地址">
+<meta property="og:image" content="https://mrnoknow.github.io/images/java内存区域与内存溢出异常/2.png">
+<meta property="og:image" content="https://mrnoknow.github.io/images/java内存区域与内存溢出异常/1.png">
+<meta property="og:image" content="https://mrnoknow.github.io/images/java内存区域与内存溢出异常/3.png">
+<meta property="og:updated_time" content="2019-03-18T06:44:47.917Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java内存区域与内存溢出异常">
+<meta name="twitter:description" content="运行时数据区域  程序计数器（Program Counter Register） 是一块很小的内存空间 是当前线程所执行的字节码指示器，字节码解释器执行是通过改变它的值来选取下一跳执行命令 单核处理器在确定时刻只能执行一条线程中的指令，为了让线程切换后能恢复到正确的位置，每个线程都有一个独立的程序计数器，这类内存区域称为“线程私有‘’ 线程执行java方法，计数器记录正在执行的虚拟机字节码指令地址">
+<meta name="twitter:image" content="https://mrnoknow.github.io/images/java内存区域与内存溢出异常/2.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Fun&#39;s biog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Fun&#39;s biog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个只会搬砖，不会写博客的不入流程序猿</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mrnoknow.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java内存区域与内存溢出异常" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/02/java内存区域与内存溢出异常/" class="article-date">
+  <time datetime="2016-12-02T11:27:31.000Z" itemprop="datePublished">2016-12-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JAVA/">JAVA</a>►<a class="article-category-link" href="/categories/JAVA/JVM/">JVM</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      java内存区域与内存溢出异常
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+-        <h3 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h3><p><img src="/images/java内存区域与内存溢出异常/2.png" alt=" "></p>
+<ul>
+<li><strong>程序计数器（Program Counter Register）</strong><ul>
+<li>是一块很小的内存空间</li>
+<li>是当前线程所执行的字节码指示器，字节码解释器执行是通过改变它的值来选取下一跳执行命令</li>
+<li>单核处理器在确定时刻只能执行一条线程中的指令，为了让线程切换后能恢复到正确的位置，每个线程都有一个独立的程序计数器，这类内存区域称为“线程私有‘’</li>
+<li>线程执行java方法，计数器记录正在执行的虚拟机字节码指令地址，若执行native方法，计数器值为空。</li>
+<li>程序计数器是唯一规定没有OutofMenoryError情况的内存</li>
+</ul>
+</li>
+<li><strong>虚拟机栈（VM Stack）</strong><ul>
+<li>描述java方法执行内存模型（字节码）</li>
+<li>虚拟机栈是线程私有</li>
+<li>每个方法执行都会创建一个帧栈，帧栈保存局部变量，操作数栈等信息，每个方法的执行都是帧栈在虚拟机栈中的入栈与出栈的过程<ul>
+<li>局部变量表存储的是基本数据类型（boolean，byte，char，short，int，float，long，double），对象引用和returnAddress类型（指向一条字节码指令的地址）</li>
+<li>long 和double 占用了2个局部变量，其他的数据类型占用1个</li>
+<li>局部变量表所需的内存空间在编译期间完成分配，在运行期间是不会被改变的</li>
+</ul>
+</li>
+<li>当java虚拟机进行动态扩展时，无法申请足够的内存将抛出OutOfMemoryError异常</li>
+<li>线程请求的栈深度大于虚拟机允许的深度将抛出StackOverflowError异常</li>
+</ul>
+</li>
+<li><strong>本地方法栈（Native Method Stack）</strong><br> <strong>与虚拟机栈相似</strong><ul>
+<li>描述native方法执行的内存模型。</li>
+<li>对使用的语言，使用方式与数据结构没有强制要求，虚拟机可自由使用它。</li>
+<li>有的将本地方法栈与虚拟机栈合二为一（Sun HotSpot虚拟机）</li>
+<li>抛出OutOfMenmoryError与StackOverflowError异常</li>
+</ul>
+</li>
+<li><strong>Java堆（Java Heap）</strong><ul>
+<li>是虚拟机管理的内存最大的一块</li>
+<li>唯一目的是存放对象实例</li>
+<li>几乎所有的对象实例都在堆上分配内存（随着JIT编译器的发展与逃逸分析技术的成熟，栈上分配与标量替换优化技术导致堆上分配不是那么绝对）</li>
+<li>垃圾收集器（GC）管理的主要区域，因此很多时候被称作“”GC堆“”</li>
+<li>可以处于物理上不连续的内存空间，但逻辑要连续</li>
+<li>在实现上，可实现固定大小，也可扩展（当前主流都可扩展）</li>
+<li>当堆中没有内存完成实例分配，且堆无法再扩展时，抛出OutOfMenmoryError异常</li>
+</ul>
+</li>
+<li><strong>方法区（Method Area）</strong><ul>
+<li>存储被虚拟机加载的类信息，常量，静态变量，即时编译器编译后的代码等数据</li>
+<li>在实现上，可实现固定大小，也可扩展（当前主流都可扩展）</li>
+<li>垃圾收集行为在这个区域比较少出现，回收目标主要是：常量池的回收和对类型的卸载（类型的卸载回收条件苛刻），这部分回收是非常必要的，否则会导致内存泄露</li>
+<li>当方法区无法满足内存分配需求时，抛出OutOfMenmoryError异常</li>
+<li><strong>运行时常量池（Runtime Constant Pool）</strong><br><em>class文件除了有类型的版本，字段，方法，接口等描述信息外，还有常量池（Constant Pool Table）用于存放编译期生成的各种字面量和符号引用，这些内容在类加载后进入方法区的运行时常量池中保存</em><ul>
+<li>java虚拟机对Class文件每个文件（包括常量池）格式都有严格的规定，但是对运行时常量池没有做任何细节要求（不同的提供商实现的虚拟机可根据自己的要求来实现这部分）</li>
+<li>翻译出来的直接引用也存储在运行时常量池中</li>
+<li>java语言不要求常量一定在编译期时产生，也就是并非与预置入 Class文件中常量池内容才能进入运行时常量池，运行期间也能将新的常量放入池中（String类的intern（）方法）</li>
+<li>无法申请到内存时抛出OutOfMenmoryError异常</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>直接内存（Direct Memory）</strong><ul>
+<li>并不是虚拟机运行时数据区的一部分，也不是java虚拟机规范中定义的内存区域，但这部分内存被频繁使用</li>
+<li>在jdk1.4中新加入NIO（New Input/Output）类，引入基于通道（Channel）与缓冲区（Buffer）的I/O方式，它用Native函数库直接分配堆外内存，然后通过java堆中的DirectByteBuffer对象作为这块内存的引用操作，避免java堆和Native堆中来回复制数据</li>
+<li>直接内存不受java虚拟机的限制，受本机内存大小以及处理器寻址空间的限制，当内存区域大于物理内存限制，抛出OutOfMenmoryError异常<h3 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h3></li>
+</ul>
+</li>
+<li><strong>对象创建</strong><ul>
+<li>虚拟机遇到new指令时，首先去检测这个指令参数是否能在常量池中定位到一个类的符号引用，检测这个符号引用代表的类是否已被加载，解析和初始化过，若没有则进行类加载过程</li>
+<li>类加载完成后（所需内存确定），虚拟机为对象分配内存（从java堆中分配一块内存）</li>
+<li>2种分配方式：<ul>
+<li><strong>指针碰撞（Bump the Pointer）</strong>,若java堆中的内存时绝对规整的，所有用过的在一边，没有用过的在一边，中间放着一个指针作为分界点的指示器，分配内存就仅仅是把那个指针向空闲的空间那边挪到一段与对象大小相等的距离</li>
+<li><strong>空闲列表（Free List）</strong>，如java堆内存不是规整的，使用和未使用的内存相互交错，虚拟机就必须维护一个列表记录那些内存可用，分配时从列表中找一块足够大的内存划分给对象实例，然后刷新列表<ul>
+<li>内存分配完后，虚拟机将分配到的内存空间都初始化为零值（不包括对象头），若使用TLAB，这个过程可提前在TLAB分配时进行</li>
+<li>对对象进行设置，例如对象是那个类的实例，如何找到类的元数据信息，对象的哈希码等，存放在对象的对象头</li>
+<li>以上完成后，从虚拟机计角度，对象已经创建，但是从java程序角度来看，对象创建刚开始，执行<init>方法后，按照程序员的意愿初始化后，对象才正真创建</init></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>对象的内存布局<ul>
+<li><strong>对象头（Header）</strong><ul>
+<li>Mark Word，用于存储对象自身本身运行时的数据（哈希表，GC分代年龄，线程持有的锁等）</li>
+<li>类型指针，对象指向它的类元数据的指针，虚拟机通过这个来确定对象是那个类型的实例（不是所有虚拟机都必须在对象数据中保留类型指针，即查找对象不一定要经过对象本身），java数组还需要一个记录数组长度的数据</li>
+</ul>
+</li>
+<li><strong>实例数据（Instance Data）</strong><ul>
+<li>对象真正存储的有效信息，即代码中定义的各种类型的字段内容</li>
+<li>这部分存储顺序受到虚拟机分配策略参数（FieldsAllocationStyle）和java源码定义顺序影响</li>
+</ul>
+</li>
+<li>对齐填充（Padding）<br><em>这部分不是必要存在</em><ul>
+<li>起占位符作用，对象起始地址必须是8字节的整数倍，当没有8字节整数倍时，就填充</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>对象访问地址</strong><br><strong>java程序通过栈中的reference类型数据来操作堆上的具体对象，reference类型被规定是一个指向对象的引用</strong><ul>
+<li><strong>句柄访问</strong>，java堆划分一块内存做为句柄池，reference存储句柄地址，句柄包含对象实例和类型数据各自的具体地址信息（稳定）<br><img src="/images/java内存区域与内存溢出异常/1.png" alt=" "></li>
+<li><strong>直接访问</strong>，reference存储是对象地址（快速）<br><img src="/images/java内存区域与内存溢出异常/3.png" alt=" "></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mrnoknow.github.io/2016/12/02/java内存区域与内存溢出异常/" data-id="cjte0699l0015cyof10de1hkv" class="article-share-link">Share</a>
+      
+        <a href="https://mrnoknow.github.io/2016/12/02/java内存区域与内存溢出异常/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/12/04/垃圾收集器与内存分配策略/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          垃圾收集器与内存分配策略
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/04/30/在vm下 Ubuntu server网络配置/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">在vm下 Ubuntu server网络配置</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/JVM/">JVM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/jsp/">jsp</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/Hexo/">Hexo</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/sql/">sql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/">虚拟机</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Ubuntu-server/">Ubuntu server</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统/">计算机系统</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Coding/">Coding</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二进制编码/">二进制编码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Coding/" style="font-size: 13.33px;">Coding</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/二进制编码/" style="font-size: 10px;">二进制编码</a> <a href="/tags/读书笔记/" style="font-size: 16.67px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/19/Android-视频播放自定义布局/">Android 视频播放自定义布局</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/14/Reduce-APK-Size/">Reduce APK Size</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/02/Android-4大组件特点/">Android 4大组件特点</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/28/多线程简单介绍/">多线程简单介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/20/RecyclerView简单复用适配器的实现/">RecyclerView简单复用适配器的实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Fun&#39;s biog<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'fun-7';
+  
+  var disqus_url = 'https://mrnoknow.github.io/2016/12/02/java内存区域与内存溢出异常/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

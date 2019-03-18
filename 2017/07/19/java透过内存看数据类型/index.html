@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>java透过内存看数据类型 | Fun&#39;s biog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Java数据类型 基本数据类型  char int short long byte float double boolean基本数据开辟空间在正常情况下都是在创建在栈内，并且基本数据类型有有一个特点，比如 12int a=1;int b=1; a和b引用的其实是同一块内存，值为1的内存，当在创建一个int c=1，c也">
+<meta name="keywords" content="读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java透过内存看数据类型">
+<meta property="og:url" content="https://mrnoknow.github.io/2017/07/19/java透过内存看数据类型/index.html">
+<meta property="og:site_name" content="Fun&#39;s biog">
+<meta property="og:description" content="Java数据类型 基本数据类型  char int short long byte float double boolean基本数据开辟空间在正常情况下都是在创建在栈内，并且基本数据类型有有一个特点，比如 12int a=1;int b=1; a和b引用的其实是同一块内存，值为1的内存，当在创建一个int c=1，c也会指向同一块内存，当a=2时，将会在java内存重新开辟一块值为2的内存，记住基">
+<meta property="og:updated_time" content="2019-03-18T06:44:47.917Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="java透过内存看数据类型">
+<meta name="twitter:description" content="Java数据类型 基本数据类型  char int short long byte float double boolean基本数据开辟空间在正常情况下都是在创建在栈内，并且基本数据类型有有一个特点，比如 12int a=1;int b=1; a和b引用的其实是同一块内存，值为1的内存，当在创建一个int c=1，c也会指向同一块内存，当a=2时，将会在java内存重新开辟一块值为2的内存，记住基">
+  
+    <link rel="alternate" href="/atom.xml" title="Fun&#39;s biog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Fun&#39;s biog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个只会搬砖，不会写博客的不入流程序猿</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mrnoknow.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java透过内存看数据类型" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/19/java透过内存看数据类型/" class="article-date">
+  <time datetime="2017-07-19T10:17:10.000Z" itemprop="datePublished">2017-07-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JAVA/">JAVA</a>►<a class="article-category-link" href="/categories/JAVA/JVM/">JVM</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      java透过内存看数据类型
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+-        <h3 id="Java数据类型"><a href="#Java数据类型" class="headerlink" title="Java数据类型"></a>Java数据类型</h3><ul>
+<li><p>基本数据类型</p>
+<ul>
+<li>char</li>
+<li>int</li>
+<li>short</li>
+<li>long</li>
+<li>byte</li>
+<li>float</li>
+<li>double</li>
+<li><p>boolean<br><strong>基本数据开辟空间在正常情况下都是在创建在栈内，并且基本数据类型有有一个特点，比如</strong></p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">int a</span>=1;</span><br><span class="line"><span class="attribute">int b</span>=1;</span><br></pre></td></tr></table></figure>
+<p><strong>a和b引用的其实是同一块内存，值为1的内存，当在创建一个int c=1，c也会指向同一块内存，当<br>a=2时，将会在java内存重新开辟一块值为2的内存，记住基本类型内存时开辟在Java的栈中的，<br>栈不止有方法的栈入栈出，还会包含基本类型的数值。</strong></p>
+</li>
+</ul>
+</li>
+<li><p>引用数据类型</p>
+<ul>
+<li>class</li>
+<li>interface</li>
+<li>数组<br><strong>引用数据类型和基本数据类型就完全不一样，引用类型会在栈创建一个指针，当数据实例化后就会在堆内存中创建一块内存，供创建的实例使用，栈内指针指向堆内对象，这里有一个注意点，就是Java中有一个Class对象，这个对象和class实例出来的对象不一样，一般Java在调用class对象中的静态方法或者静态值（其实实例化就是调用了静态方法）后，会先创建一个Class对象在运行时常量池中，大家都知道，常量池中存储的都是一些字符信息，这个Class对象就是按照这些来创建的，当你new一个对象后，你调用的方法入口都只有一个就是Class对象的描述的方法地址入口，不会改变，也就是说，你同一class对象类型的方法入口只有一个，java中的反射机制也是通过Class对象来实现的，所以我们总是会说，Java中的”==”,比较的是地址，其实比较的就是一块栈内的指针地址，所以我们就能够理解基本类型的比较为什么比较的值了有看过String源码的人会发现String中的equals其实是把字符一个一个拿出来比的，也就是变成基本类型char，基本类型的数组也是一样。</strong></li>
+</ul>
+<h3 id="Java的关键字"><a href="#Java的关键字" class="headerlink" title="Java的关键字"></a>Java的关键字</h3><ul>
+<li><p>final</p>
+<ul>
+<li><p>这个关键字，就是在开始的时候就把这个字存储在了常量池中，并且不可改变，所以是一个常量，其实在Java中，当方法添加这个关键字后，java就会将这个方法优化，在编译时，将此方法内嵌到调用了此方法中的方法中，比如</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">final <span class="function"><span class="keyword">fun</span>(<span class="title">int</span></span> a)&#123;</span><br><span class="line">  System.<span class="keyword">out</span>.println(a);</span><br><span class="line">&#125;</span><br><span class="line">f()&#123;</span><br><span class="line">  int a=<span class="number">1</span>;</span><br><span class="line">  <span class="function"><span class="keyword">fun</span>(<span class="title">a</span></span>);</span><br><span class="line">  int b=<span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>变成</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">f()&#123;</span><br><span class="line">  int <span class="attribute">a</span>=1;</span><br><span class="line">  System.out.println(a);</span><br><span class="line">  int <span class="attribute">b</span>=2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是Java中的一个优化，叫内嵌调用，记住当数据添加了final关键字后就会直接放在常量池，并且初始化。这里还有一点一个class对象中的基本数据都会被初始化，而方法中的不会，方法中的数据会在运行时，在运行时常量池中进行初始化，并且使用。</p>
+</li>
+</ul>
+</li>
+<li>static<ul>
+<li>上面提到Class对象，其实这个值就会被放在此对象中，因为在Java中，无论你实现多少个同一类型对象，都只会对应一个Class对象，Class对象存在于运行常量池中，所以此值也就是在运行常量池中。<br><strong>常量池主要用于存放两大类常量：字面量(Literal)和符号引用量(Symbolic References)，运行时常量池用于存放编译期生成的各种字面量和符号引用，这部分内容将在类加载后进入方法区的运行时常量池中存放。</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="如上面有错误，望不吝指出，正在学习ing，害怕理解出错。"><a href="#如上面有错误，望不吝指出，正在学习ing，害怕理解出错。" class="headerlink" title="如上面有错误，望不吝指出，正在学习ing，害怕理解出错。"></a>如上面有错误，望不吝指出，正在学习ing，害怕理解出错。</h4>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mrnoknow.github.io/2017/07/19/java透过内存看数据类型/" data-id="cjte0699h000ucyofbw86d6ev" class="article-share-link">Share</a>
+      
+        <a href="https://mrnoknow.github.io/2017/07/19/java透过内存看数据类型/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/07/20/RecyclerView简单复用适配器的实现/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          RecyclerView简单复用适配器的实现
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/07/Andorid-手势识别-GestureDetector/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Andorid 手势识别(GestureDetector)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/JVM/">JVM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/jsp/">jsp</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/Hexo/">Hexo</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/sql/">sql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/">虚拟机</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Ubuntu-server/">Ubuntu server</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统/">计算机系统</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Coding/">Coding</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二进制编码/">二进制编码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Coding/" style="font-size: 13.33px;">Coding</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/二进制编码/" style="font-size: 10px;">二进制编码</a> <a href="/tags/读书笔记/" style="font-size: 16.67px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/19/Android-视频播放自定义布局/">Android 视频播放自定义布局</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/14/Reduce-APK-Size/">Reduce APK Size</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/02/Android-4大组件特点/">Android 4大组件特点</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/28/多线程简单介绍/">多线程简单介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/20/RecyclerView简单复用适配器的实现/">RecyclerView简单复用适配器的实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Fun&#39;s biog<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'fun-7';
+  
+  var disqus_url = 'https://mrnoknow.github.io/2017/07/19/java透过内存看数据类型/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

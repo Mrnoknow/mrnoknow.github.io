@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>git命令(因为经常忘记，所以记录下) | Fun&#39;s biog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="1.git init2.git remote add origin -ssh3.git add .4.git commit -m “First”5.git push origin master 在创建密钥时，一定要进入cd /中，然后一直回车就行了，有时会出各种幺蛾子  密钥创建： ssh-keygen -t rsa ">
+<meta name="keywords" content="other">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git命令(因为经常忘记，所以记录下)">
+<meta property="og:url" content="https://mrnoknow.github.io/2016/04/14/git添加repository命令-因为经常忘记，所以记录下/index.html">
+<meta property="og:site_name" content="Fun&#39;s biog">
+<meta property="og:description" content="1.git init2.git remote add origin -ssh3.git add .4.git commit -m “First”5.git push origin master 在创建密钥时，一定要进入cd /中，然后一直回车就行了，有时会出各种幺蛾子  密钥创建： ssh-keygen -t rsa -C “your_email@example.com” 密钥生成在 ~/.ssh">
+<meta property="og:updated_time" content="2019-03-18T06:44:47.916Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git命令(因为经常忘记，所以记录下)">
+<meta name="twitter:description" content="1.git init2.git remote add origin -ssh3.git add .4.git commit -m “First”5.git push origin master 在创建密钥时，一定要进入cd /中，然后一直回车就行了，有时会出各种幺蛾子  密钥创建： ssh-keygen -t rsa -C “your_email@example.com” 密钥生成在 ~/.ssh">
+  
+    <link rel="alternate" href="/atom.xml" title="Fun&#39;s biog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Fun&#39;s biog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个只会搬砖，不会写博客的不入流程序猿</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mrnoknow.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-git添加repository命令-因为经常忘记，所以记录下" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/14/git添加repository命令-因为经常忘记，所以记录下/" class="article-date">
+  <time datetime="2016-04-14T09:03:21.000Z" itemprop="datePublished">2016-04-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/git/">git</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      git命令(因为经常忘记，所以记录下)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+-        <p>1.git init<br>2.git remote add origin -ssh<br>3.git add .<br>4.git commit -m “First”<br>5.git push origin master</p>
+<p><strong>在创建密钥时，一定要进入<code>cd /</code>中，然后一直回车就行了，有时会出各种幺蛾子</strong></p>
+<ul>
+<li>密钥创建： ssh-keygen -t rsa -C “your_email@example.com”</li>
+<li>密钥生成在 ~/.ssh 中，有2个id_rsa与id_rsa.pub，将id_rsa.pub中的key值复制道github中ssh key值就行了</li>
+<li>查看远程仓库：$ git remote -v</li>
+<li>添加远程仓库：$ git remote add [name] [url]</li>
+<li>删除远程仓库：$ git remote rm [name]</li>
+<li>拉取远程仓库：$ git pull [remoteName] [localBranchName]</li>
+<li>推送远程仓库：$ git push [remoteName] [localBranchName]</li>
+<li>查看本地分支：$ git branch</li>
+<li>查看远程分支：$ git branch -r</li>
+<li>创建本地分支：$ git branch [name] —-注意新分支创建后不会自动切换为当前分支</li>
+<li>切换分支：$ git checkout [name]</li>
+</ul>
+<p><code>remoteName</code> 就是git remote add [name] [url]中的<code>name</code><br>origin    git@github.com:Mrnoknow/mrnoknow.github.io.git (fetch)<br>origin    git@github.com:Mrnoknow/mrnoknow.github.io.git (push)<br>origin 就是对应的remoteName，也就是remote add [name] 中的name，<br>localBranchName 就是远程仓库的分支名字</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mrnoknow.github.io/2016/04/14/git添加repository命令-因为经常忘记，所以记录下/" data-id="cjte0699b000jcyofbreexr54" class="article-share-link">Share</a>
+      
+        <a href="https://mrnoknow.github.io/2016/04/14/git添加repository命令-因为经常忘记，所以记录下/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/14/oracle-11g常用命令/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          oracle 11g常用命令
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/04/09/Lambda表达式遍历java集合/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Lambda表达式遍历java集合</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/JVM/">JVM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/jsp/">jsp</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/Hexo/">Hexo</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/sql/">sql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/">虚拟机</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Ubuntu-server/">Ubuntu server</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统/">计算机系统</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Coding/">Coding</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二进制编码/">二进制编码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Coding/" style="font-size: 13.33px;">Coding</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/二进制编码/" style="font-size: 10px;">二进制编码</a> <a href="/tags/读书笔记/" style="font-size: 16.67px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/19/Android-视频播放自定义布局/">Android 视频播放自定义布局</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/14/Reduce-APK-Size/">Reduce APK Size</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/02/Android-4大组件特点/">Android 4大组件特点</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/28/多线程简单介绍/">多线程简单介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/20/RecyclerView简单复用适配器的实现/">RecyclerView简单复用适配器的实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Fun&#39;s biog<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'fun-7';
+  
+  var disqus_url = 'https://mrnoknow.github.io/2016/04/14/git添加repository命令-因为经常忘记，所以记录下/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

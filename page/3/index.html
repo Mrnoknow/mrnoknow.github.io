@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Fun&#39;s biog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="biog.fun.know">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fun&#39;s biog">
+<meta property="og:url" content="https://mrnoknow.github.io/page/3/index.html">
+<meta property="og:site_name" content="Fun&#39;s biog">
+<meta property="og:description" content="biog.fun.know">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fun&#39;s biog">
+<meta name="twitter:description" content="biog.fun.know">
+  
+    <link rel="alternate" href="/atom.xml" title="Fun&#39;s biog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Fun&#39;s biog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个只会搬砖，不会写博客的不入流程序猿</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mrnoknow.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Android-Adapter重复绘制问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/07/Android-Adapter重复绘制问题/" class="article-date">
+  <time datetime="2016-12-07T05:23:28.000Z" itemprop="datePublished">2016-12-07</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/07/Android-Adapter重复绘制问题/">Android Adapter重复绘制问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+-        <h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>今天在实现复用Adapter的时候，我在使用AddView添加组件的时候，发现当界面上下拉动的时候，添加组件会每次增加一个，并且第一部分区域和最后一部分会重复绘制多次<br>如图：</p>
+<p><img src="/images/Android Adapter重复绘制问题/1.gif" alt=""></p>
+<p>然后这是最尴尬的，我不知道它为什么会重复绘制，如果是刷新的话好理解，那为什么第一个和最后一个一开始就重复绘制了如此多的次数<br><strong>以下部分来自<a href="http://www.cnblogs.com/nailperry/p/4675599.html" target="_blank" rel="noopener">http://www.cnblogs.com/nailperry/p/4675599.html</a></strong></p>
+<h4 id="ListView-OnMeasure方法源码"><a href="#ListView-OnMeasure方法源码" class="headerlink" title="ListView.OnMeasure方法源码"></a>ListView.OnMeasure方法源码</h4><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="function"><span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> childWidth = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 默认为0</span></span><br><span class="line">    <span class="keyword">int</span> childHeight = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> childState = <span class="number">0</span>;</span><br><span class="line">   </span><br><span class="line">    mItemCount = mAdapter == <span class="keyword">null</span> ? <span class="number">0</span> : mAdapter.getCount();</span><br><span class="line">    <span class="comment">// ViewMode 处于UNSPECIFIED 状态，且mAdapter.getCount() &gt; 0时绘制首项来探测大小</span></span><br><span class="line">    <span class="keyword">if</span> (mItemCount &gt; <span class="number">0</span> &amp;&amp; (widthMode == MeasureSpec.UNSPECIFIED ||</span><br><span class="line">            heightMode == MeasureSpec.UNSPECIFIED)) &#123;</span><br><span class="line">        <span class="comment">// getView(0)</span></span><br><span class="line">        <span class="keyword">final</span> View child = obtainView(<span class="number">0</span>, mIsScrap);</span><br><span class="line"></span><br><span class="line">        measureScrapChild(child, <span class="number">0</span>, widthMeasureSpec);</span><br><span class="line"></span><br><span class="line">        childWidth = child.getMeasuredWidth();</span><br><span class="line">        <span class="comment">// 更新为item0的高度</span></span><br><span class="line">        childHeight = child.getMeasuredHeight();</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     *  ViewMode 处于UNSPECIFIED 状态，当mItemCount &gt; 0时，heightSize为getView(0)的高度+ListView距离顶部和底部的距离+2*getVerticalFadingEdgeLength；</span></span><br><span class="line"><span class="comment">     *  当mItemCount==0时，childHeight=0，则heightSize返回的仅仅是ListView距离顶部和底部的距离+2*getVerticalFadingEdgeLength</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">if</span> (heightMode == MeasureSpec.UNSPECIFIED) &#123;</span><br><span class="line">        heightSize = mListPadding.top + mListPadding.bottom + childHeight +</span><br><span class="line">                getVerticalFadingEdgeLength() * <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// ViewMode 处于AT_MOST 状态，绘制多个列表项以确定高度。</span></span><br><span class="line">    <span class="keyword">if</span> (heightMode == MeasureSpec.AT_MOST) &#123;</span><br><span class="line">        <span class="comment">// 会调用多个getView，这些view将不会被复用</span></span><br><span class="line">        heightSize = measureHeightOfChildren(widthMeasureSpec, <span class="number">0</span>, NO_POSITION, heightSize, <span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    setMeasuredDimension(widthSize , heightSize);</span><br><span class="line">    mWidthMeasureSpec = widthMeasureSpec;        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="measureHeightOfChildren方法的源码"><a href="#measureHeightOfChildren方法的源码" class="headerlink" title="measureHeightOfChildren方法的源码"></a>measureHeightOfChildren方法的源码</h4><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">int</span> measureHeightOfChildren(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> startPosition, <span class="keyword">int</span> endPosition,</span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">int</span> maxHeight, <span class="keyword">int</span> disallowPartialChildPosition) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">final</span> ListAdapter adapter = mAdapter;</span><br><span class="line">        <span class="keyword">if</span> (adapter == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> mListPadding.top + mListPadding.bottom;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> returnedHeight = mListPadding.top + mListPadding.bottom;</span><br><span class="line">        ...</span><br><span class="line">        View child;</span><br><span class="line">        <span class="comment">// onMeasure传递过来的endPosition==NO_POSITION，也就是-1，则令endPosition取数据源的adapter.getCount() - 1</span></span><br><span class="line">        endPosition = (endPosition == NO_POSITION) ? adapter.getCount() - 1 : endPosition;</span><br><span class="line">        <span class="keyword">final</span> AbsListView.RecycleBin recycleBin = mRecycler;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span> recyle = recycleOnMeasure();</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">boolean</span>[] isScrap = mIsScrap;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 从起始位置0（onMeasure中传入的是0）开始，循环地创建ItemView，并累加ItemView的高度，当高度和超过onMeasure传递过来的maxHeight（其实是测量规格中的size）时，跳出循环</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">for</span> (i = startPosition; i &lt;= endPosition; ++i) &#123;</span><br><span class="line">            child = obtainView(i, isScrap);</span><br><span class="line"></span><br><span class="line">            measureScrapChild(child, i, widthMeasureSpec);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (i &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// 计算高度的时候还需将ItemView间的分隔距离考虑进来</span></span><br><span class="line">                returnedHeight += dividerHeight;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// Recycle the view before we possibly return from the method</span></span><br><span class="line">            <span class="keyword">if</span> (recyle &amp;&amp; recycleBin.shouldRecycleViewType(</span><br><span class="line">                    ((LayoutParams) child.getLayoutParams()).viewType)) &#123;</span><br><span class="line">                <span class="comment">/*</span></span><br><span class="line"><span class="comment">                 *  注意，这里addScrapView方法传入的第二个参数也就是position为-1，</span></span><br><span class="line"><span class="comment">                 *  由于Layout过程中调用getScrapView方法时传入的position&gt;=0，</span></span><br><span class="line"><span class="comment">                 *  故position为-1的ScrapView都不会被回收，读懂这句话需要了解RecycleBin类，这里暂不深究。</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                recycleBin.addScrapView(child, <span class="number">-1</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            returnedHeight += child.getMeasuredHeight();</span><br><span class="line">            <span class="comment">// 循环提前终止条件</span></span><br><span class="line">            <span class="keyword">if</span> (returnedHeight &gt;= maxHeight) &#123;</span><br><span class="line">                <span class="comment">// 加上第i个的高度后returnedHeight已经超过了maxHeight，故高度探测应结束，说明最多只能容纳到第i个item</span></span><br><span class="line">                <span class="keyword">return</span> (disallowPartialChildPosition &gt;= <span class="number">0</span>) <span class="comment">// Disallowing is enabled (&gt; -1)</span></span><br><span class="line">                            &amp;&amp; (i &gt; disallowPartialChildPosition) <span class="comment">// We've past the min pos</span></span><br><span class="line">                            &amp;&amp; (prevHeightWithoutPartialChild &gt; <span class="number">0</span>) <span class="comment">// We have a prev height</span></span><br><span class="line">                            &amp;&amp; (returnedHeight != maxHeight) <span class="comment">// 第i个Item不能显示完全，即超出容器</span></span><br><span class="line">                        ? prevHeightWithoutPartialChild</span><br><span class="line">                        : maxHeight;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> ((disallowPartialChildPosition &gt;= <span class="number">0</span>) &amp;&amp; (i &gt;= disallowPartialChildPosition)) &#123;</span><br><span class="line">                prevHeightWithoutPartialChild = returnedHeight;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> returnedHeight;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>A parent view may call measure() more than once on its children. For example, the parent may measure each child once with unspecified dimensions to find out how big they want to be, then call measure() on them again with actual numbers if the sum of all the children’s unconstrained sizes is too big or too small.</li>
+<li><p>一个父视图可能多次调用子视图的measure方法，意思就是说，当ListView的OnMeasure方法计算完Item的大小，ListView的父视图将要查看此结果，然后进行判定这个结果是否能被接受，若不能，则会再次调用measureHeightOfChildren方法，从而导致getView方法的重复调用，而造成第一行和最后一行被多次绘制<br><strong>但是，那个上下拉后，隐藏的Item重现是再次被绘制还不是不是太清楚，有几张图，然后看了网上的ListView源码解释，还是很模糊，在此先贴图</strong><br><img src="/images/Android Adapter重复绘制问题/2.png" alt=""></p>
+</li>
+<li><p>上图意思很容易看懂，但是我还是无法理解重复绘制的问题，我在代码中添加的组件怎么会在重回屏幕时增加<br><img src="/images/Android Adapter重复绘制问题/3.jpg" alt=""></p>
+</li>
+<li>上图的意思就是，每次内存中只保存显示的几个Item，之后拖动后，被隐藏的Item（View）会保存到Recycler中，当再次回到原来位置时，会从Recycler中获取，感觉好像解释不了重新被绘制的问题<br><strong>总结上面2张图，就是如果你ListView中一个屏幕中有N个Item（View），你的内存中也只会产生N+1个Item（View），无论你ListView中有多少行数据，然后每当一个Item（View）移除屏幕，放在RecycleBin中的Item（View）就会去填充，然后移除的Item（View）进入RecycleBin中，如此循环往复，这里应该表达清楚的是每个Item中的信息是改变的，只是用的View那个对象，和View中的信息无关，所以尽管如此还是不能解释我代码中添加的元素越来越多问题</strong><br><strong>以上基本类似的意思，但是在以上讲解中，并没有提到getView被复用的点，相反而是为了解决此问题和OOM问题所做的解释</strong></li>
+</ul>
+<h3 id="2017-7-26更"><a href="#2017-7-26更" class="headerlink" title="2017-7-26更"></a>2017-7-26更</h3><p>  <strong>对于上面的问题，我在前几天突然豁然开朗，就是ListView中的item放进RecycleBin后，在下拉后会复用RecycleBin中的item，所以在item加一个view后，在复用中，此view还是会存在于此item中，我们每次下拉或者刷新，都只是更改item中的信息，或者图片，并没有添加过view或者其他一些组件，所以当你有item的添加组件操作，会在下面的刷新中，复用此item中的view越来越多，因为我们是在getView（）方法中进行信息或者图片加载，而每次下拉总是会调用getView(),所以添加向item添加view这一操作，证实了itme复用的实现。</strong></p>
+<h3 id="2017-8-1更"><a href="#2017-8-1更" class="headerlink" title="2017-8-1更"></a>2017-8-1更</h3><ul>
+<li>当加载第一页ListView时，会加载比第一页item多2个的item</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mrnoknow.github.io/2016/12/07/Android-Adapter重复绘制问题/" data-id="cjte069am003ccyofbez8qgn8" class="article-share-link">Share</a>
+      
+        <a href="https://mrnoknow.github.io/2016/12/07/Android-Adapter重复绘制问题/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/other/">other</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-模板Adapter" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/05/模板Adapter/" class="article-date">
+  <time datetime="2016-12-05T09:38:05.000Z" itemprop="datePublished">2016-12-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/05/模板Adapter/">模板Adapter</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+-        <h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>当前一个项目会有很多的Adapter与它所对应的Model，所以这样会产生很多的Adapter类与Model，这样代码量就会很大，并且还代码重复多，这是一个烦人的过程，所以需要一个万能的模板Adapter，一个Adapter，所有的ListView都能用</p>
+<h4 id="ViewHolder模板"><a href="#ViewHolder模板" class="headerlink" title="ViewHolder模板"></a>ViewHolder模板</h4><p><em>对此我直接上源码</em><br><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.againadapter;</span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.graphics.Bitmap;</span><br><span class="line"><span class="keyword">import</span> android.graphics.drawable.Drawable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.util.SparseArray;</span><br><span class="line"><span class="keyword">import</span> android.view.LayoutInflater;</span><br><span class="line"><span class="keyword">import</span> android.view.View;</span><br><span class="line"><span class="keyword">import</span> android.view.ViewGroup;</span><br><span class="line"><span class="keyword">import</span> android.widget.ImageView;</span><br><span class="line"><span class="keyword">import</span> android.widget.TextView;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonViewHolder</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> SparseArray&lt; View&gt; mViews;</span><br><span class="line">  <span class="keyword">private</span> View Fview;</span><br><span class="line">  <span class="comment">/*</span></span><br><span class="line"><span class="comment">   * 构造函数，设置Tag，</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">private</span> CommonViewHolder(Context context, ViewGroup parent, <span class="keyword">int</span> layoutId,  </span><br><span class="line">            <span class="keyword">int</span> position)&#123;</span><br><span class="line">    <span class="keyword">this</span>.mViews=<span class="keyword">new</span> SparseArray&lt;View&gt;();</span><br><span class="line">    Fview=LayoutInflater.from(context).inflate(layoutId, parent,<span class="keyword">false</span>);</span><br><span class="line">    Fview.setTag(<span class="keyword">this</span>); </span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">/*</span></span><br><span class="line"><span class="comment">   * 得到Tag</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> CommonViewHolder get(Context context, View convertView,  </span><br><span class="line">            ViewGroup parent, <span class="keyword">int</span> layoutId, <span class="keyword">int</span> position)&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(convertView==<span class="keyword">null</span>)&#123;</span><br><span class="line">    </span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> CommonViewHolder(context,parent,layoutId,position);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> (CommonViewHolder)convertView.getTag();</span><br><span class="line">   &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">/*</span></span><br><span class="line"><span class="comment">   * 最重要获取布局文件中的元素</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">   <span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">  <span class="keyword">public</span> &lt;T <span class="keyword">extends</span> View&gt; <span class="function">T <span class="title">getView</span><span class="params">(<span class="keyword">int</span> viewId)</span>  </span>&#123;  </span><br><span class="line">      </span><br><span class="line">          View view = (View) mViews.get(viewId);   <span class="comment">//从 集合中找，没有找到从当前所在布局文件中找</span></span><br><span class="line">          <span class="keyword">if</span> (view == <span class="keyword">null</span>)  </span><br><span class="line">          &#123;</span><br><span class="line">            </span><br><span class="line">              view = Fview.findViewById(viewId);  </span><br><span class="line">              mViews.put(viewId, view);  </span><br><span class="line">          &#125;  </span><br><span class="line">          <span class="keyword">return</span> (T) view;  </span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   </span><br><span class="line">   <span class="keyword">public</span> <span class="function">View <span class="title">getView</span><span class="params">()</span></span>&#123;</span><br><span class="line">     <span class="keyword">return</span> Fview;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="comment">/*</span></span><br><span class="line"><span class="comment">    * 以下全是设置元素信息的函数</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setText</span><span class="params">(<span class="keyword">int</span> textId,String textView)</span></span>&#123;</span><br><span class="line">     TextView tv=getView(textId);</span><br><span class="line">     tv.setText(textView);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setImageResource</span><span class="params">(<span class="keyword">int</span> imageViewId,<span class="keyword">int</span> imageView)</span></span>&#123;</span><br><span class="line">     ImageView im=getView(imageViewId);</span><br><span class="line">     im.setImageResource(imageView);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setImageDrawable</span><span class="params">(<span class="keyword">int</span> imageViewId,Drawable drawable)</span></span>&#123;</span><br><span class="line">     ImageView im=getView(imageViewId);</span><br><span class="line">     im.setImageDrawable(drawable);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">public</span> <span class="function"><span class="keyword">void</span> <span class="title">setImageBitmap</span><span class="params">(<span class="keyword">int</span> imageViewId,Bitmap bitmap)</span></span>&#123;</span><br><span class="line">     ImageView im=getView(imageViewId);</span><br><span class="line">     im.setImageBitmap(bitmap);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以上代码是不是简短，但是很精辟</p>
+<ul>
+<li>此代码主要在于构造函数，和getView（int viewId）函数，你可以加上Log查看它 的执行过程<h4 id="Adapter模板"><a href="#Adapter模板" class="headerlink" title="Adapter模板"></a>Adapter模板</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.againadapter;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.view.View;</span><br><span class="line"><span class="keyword">import</span> android.view.ViewGroup;</span><br><span class="line"><span class="keyword">import</span> android.widget.BaseAdapter;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ReplyAdapter</span>&lt;<span class="type">T</span>&gt; <span class="title">extends</span> <span class="title">BaseAdapter</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> List&lt;T&gt; list;</span><br><span class="line">  <span class="keyword">private</span> Context context;</span><br><span class="line">  <span class="keyword">private</span> int layoutId;</span><br><span class="line">  <span class="keyword">public</span> ReplyAdapter(Context context,List&lt;T&gt; list,int layoutId)&#123;</span><br><span class="line">    <span class="keyword">this</span>.context=context;</span><br><span class="line">    <span class="keyword">this</span>.list=list;</span><br><span class="line">    <span class="keyword">this</span>.layoutId=layoutId;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> int getCount() &#123;</span><br><span class="line">    <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">    <span class="keyword">return</span> list.size();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> Object getItem(int poistion) &#123;</span><br><span class="line">    <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">    <span class="keyword">return</span> poistion;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> long getItemId(int poistion) &#123;</span><br><span class="line">    <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">    <span class="keyword">return</span> poistion;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> View getView(int poistion, View view, ViewGroup viewGroup) &#123;</span><br><span class="line">    <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">    <span class="comment">/*ViewHolder viewHolder=null;</span></span><br><span class="line"><span class="comment">    view = LayoutInflater.from(context).inflate(</span></span><br><span class="line"><span class="comment">                R.layout.replay_text, null);</span></span><br><span class="line"><span class="comment">    viewHolder=new ViewHolder();</span></span><br><span class="line"><span class="comment">    viewHolder.setText((TextView)view.findViewById(R.id.textView1));</span></span><br><span class="line"><span class="comment">    view.setTag(viewHolder);</span></span><br><span class="line"><span class="comment">    viewHolder.getText().setText(list.get(poistion));*/</span></span><br><span class="line">    </span><br><span class="line">  <span class="comment">/*  CommonViewHolder viewHolder=CommonViewHolder.get(context, view, viewGroup, R.layout.replay_text, poistion);</span></span><br><span class="line"><span class="comment">    TextView tv=viewHolder.getView(R.id.textView1);</span></span><br><span class="line"><span class="comment">    tv.setText(list.get(poistion)); </span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    CommonViewHolder viewHolder=CommonViewHolder.<span class="keyword">get</span>(context, view, viewGroup, layoutId, poistion);</span><br><span class="line">    <span class="function"><span class="title">fun</span><span class="params">(viewHolder,list.<span class="keyword">get</span>(poistion)</span></span>);</span><br><span class="line">    <span class="keyword">return</span> viewHolder.getView();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">abstract</span> void <span class="function"><span class="title">fun</span><span class="params">(CommonViewHolder viewHolder,T <span class="keyword">fun</span>)</span></span>;<span class="comment">//直接重写此函数，设置你需要设置的元素信息</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="MainActivity"><a href="#MainActivity" class="headerlink" title="MainActivity"></a>MainActivity</h4><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.againadapter;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.Arrays;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.app.Activity;</span><br><span class="line"><span class="keyword">import</span> android.os.Bundle;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.util.Log;</span><br><span class="line"><span class="keyword">import</span> android.view.View;</span><br><span class="line"><span class="keyword">import</span> android.widget.AdapterView;</span><br><span class="line"><span class="keyword">import</span> android.widget.ListView;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="title">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> List&lt;Integer&gt; mDatas=new ArrayList&lt;Integer&gt;(Arrays.asList(R.drawable.ic_launcher,R.drawable.<span class="keyword">fun</span>));</span><br><span class="line">  <span class="keyword">private</span> ListView listView;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_main);</span><br><span class="line">        listView=(ListView)findViewById(R.id.listView1);</span><br><span class="line">        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()&#123;</span><br><span class="line"></span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="keyword">public</span> void onItemClick(AdapterView&lt;?&gt; arg0, View arg1, int arg2,</span><br><span class="line">          long arg3) &#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        Log.i(<span class="string">"ssssssssss"</span>, <span class="string">"fun"</span>);</span><br><span class="line">        </span><br><span class="line">      &#125;</span><br><span class="line">          </span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         *  直接设置Adapter,重写fun函数，设置元素信息</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        listView.setAdapter(new ReplyAdapter&lt;Integer&gt;(<span class="keyword">this</span>,mDatas,R.layout.replay_text)&#123;</span><br><span class="line"></span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      void <span class="function"><span class="title">fun</span><span class="params">(CommonViewHolder viewHolder, Integer <span class="keyword">fun</span>)</span></span> &#123;</span><br><span class="line">        <span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">        viewHolder.setText(R.id.textView1, <span class="string">"ssssss"</span>);</span><br><span class="line">        viewHolder.setImageResource(R.id.imageView1, <span class="function"><span class="keyword">fun</span>);</span></span><br><span class="line">      &#125;</span><br><span class="line">          </span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>以上是看完张鸿洋博客，依葫芦画瓢写的一个例子，博文地址<a href="http://blog.csdn.net/lmj623565791/article/details/38902805/" target="_blank" rel="noopener">http://blog.csdn.net/lmj623565791/article/details/38902805/</a></strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mrnoknow.github.io/2016/12/05/模板Adapter/" data-id="cjte0699v001qcyofrg6ilb6t" class="article-share-link">Share</a>
+      
+        <a href="https://mrnoknow.github.io/2016/12/05/模板Adapter/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Coding/">Coding</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-垃圾收集器与内存分配策略" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/04/垃圾收集器与内存分配策略/" class="article-date">
+  <time datetime="2016-12-04T06:02:04.000Z" itemprop="datePublished">2016-12-04</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JAVA/">JAVA</a>►<a class="article-category-link" href="/categories/JAVA/JVM/">JVM</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/04/垃圾收集器与内存分配策略/">垃圾收集器与内存分配策略</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+-        <h3 id="垃圾收集器概述"><a href="#垃圾收集器概述" class="headerlink" title="垃圾收集器概述"></a>垃圾收集器概述</h3><ul>
+<li>垃圾收集（Garbage Collection，GC）在1960年诞生于MIT的Lisp第一门真正使用内存动态分配和垃圾收集技术的语言</li>
+<li>程序计数器，虚拟机栈，本地方法栈都是随线程而生，随线程而灭，所以没有垃圾回收</li>
+<li>java堆和方法区实现GC，一个接口中的多个实现类需要的内存都不一样，一个方法中的多个分支需要的内存也可能不一样，程序在运行中才会知道创建哪些对象，所以创建和回收都是动态的，GC所关注的是这部分内存<h3 id="对象存活判断"><a href="#对象存活判断" class="headerlink" title="对象存活判断"></a>对象存活判断</h3><strong>在GC回收前要判断哪些对象是”存活”，哪些“死去”，可以回收</strong></li>
+<li><strong>引用计数法（Reference Counting）</strong><ul>
+<li>给对象添加一个引用计数器，没有一个地方引用它，计数器加1，当引用失效，计数器减1，任何时刻计数器值为0时对象就是不可能在被使用了</li>
+<li>此法实现简单，效率高，微软的COM（Component Object Model）技术，使用ActionScript3的FlashPlayer，Python语言和在游戏脚本领域被广泛应用的Squirrel</li>
+<li>难以解决对象之间相互循环引用的问题</li>
+</ul>
+</li>
+<li><strong>可达性分析算法（Reachability Analysis）</strong><br><em>主流程序语言（Java，C#，古老的Lisp）都使用它</em><ul>
+<li>通过一系列“GC Roots”的对象作为起始点，从这些节点开始往下搜索，所经过的路径称为引用链（Reference Chain），当一个对象到GC Roots没有任何引用链相连，则证明此对象是不可用的（即被回收）</li>
+<li>可做GC Roots：虚拟机栈（帧栈中的本地变量表）中的引用对象，方法区中的类静态属性引用的对象，方法区中的常用引用的对象，本地方法中的JNI（即Native方法）引用的对象<h3 id="回收方法区"><a href="#回收方法区" class="headerlink" title="回收方法区"></a>回收方法区</h3></li>
+</ul>
+</li>
+<li>很多人认为方法区是没有垃圾收集的，java虚拟机规范中说过不要求虚拟机中在方法区实现垃圾收集</li>
+<li>方法区中垃圾收集的效率非常低，在堆中，特别是新生代，常规的一次垃圾收集可回收70%~95%的空间，而方法区远低于此</li>
+<li>方法区垃圾收集主要是2部分内容：<strong>废弃常量和无用的类</strong><ul>
+<li>废弃常量和java堆中的对象非常相似，如果一个字段没有任何对象引用，则将回收</li>
+<li>无用的类的判定（以下仅仅是“可以”，不像java对中的对象实例一样，一定被回收）<ul>
+<li>该类所有的实例都被回收，也就是java堆中不存在改类的任何的实例</li>
+<li>加载改类的ClassLoader已经被回收</li>
+<li>该类对于的java.lang.Class对象没有任何地方被引用，无法在任何地方通过反射访问该类的方法</li>
+</ul>
+</li>
+<li>在大量使用反射，动态代理，CGLib等ByteCode框架，动态生成JSP 以及OSGi这类频繁自定义ClassLoader的场景需要虚拟机具备类卸载的功能，以保证方法区不溢出<h3 id="垃圾收集算法"><a href="#垃圾收集算法" class="headerlink" title="垃圾收集算法"></a>垃圾收集算法</h3></li>
+</ul>
+</li>
+<li><strong>标记——清除算法（Mark-Sweep，最基本的回收算法）</strong><ul>
+<li>标记所有需要回收的对象，然后统一回收所有被标记的对象</li>
+<li>缺点：1.效率不高，2,.容易产生大量的不连续的内存碎片，在分配大大对象的时候，无法找到足够的连续内存，会触发垃圾收集回收</li>
+</ul>
+</li>
+<li><strong>标记——整理算法</strong><ul>
+<li>对标记——清除算法的改进，在标记后，让所有存活的对象向一端移动，然后直接清理掉标记内容，以保证不产生不连续的内存碎片</li>
+</ul>
+</li>
+<li><strong>复制算法</strong><ul>
+<li>将可用内存划分为大小相等的两块，每次使用其中的一块，当一块内存用完，就将存活对象复制到另外一块上面，然后将使用过的那块一次清除掉</li>
+<li>缺点：内存缩小，花费太大</li>
+<li>IBM研究表明新生代对象98%是可被回收的，所以不用采用1:1的比例分配内存，将内存分配为<strong>一块较大的Eden</strong>和<strong>两块较小的Survivor</strong>，每次使用一块Eden和Survivor，回收时将Eden和Survivor存活的对象复制到另一块Survivor内存上，HotSpot虚拟机默认Eden：Survivor=8:1</li>
+</ul>
+</li>
+<li><strong>分代收集算法（Mark-Compact，目前最主流）</strong><ul>
+<li>根据对象存活的不同周期，将内存划分为几块，根据各个特点选择最合理的收集回收算法<h3 id="HotSpot算法实现"><a href="#HotSpot算法实现" class="headerlink" title="HotSpot算法实现"></a>HotSpot算法实现</h3></li>
+</ul>
+</li>
+<li><strong>枚举根节点</strong>（可达性分析中GC Roots节点引用链这个操作为例）<ul>
+<li>可作为GC Roots的节点在全局性的引用（比如常量或类静态属性）与执行上下文（例如帧栈中的本地变量表），很多应用在方法区有100+M以上，如果每个引用都检查，会消耗大量时间</li>
+<li>可达性分析对执行时间的敏感体现在GC停顿，分析工作必须保持在一致性的快照中，即在分析期间系统冻结在某一时刻，导致GC执行时必须停到所有的java线程（“Stop The World”） ，</li>
+<li>目前主流java虚拟机使用准确式GC，当执行系统停下来后，不需要检查全部的执行上下文和全局引用位置，虚拟机有办法知道哪些地方存放了对象</li>
+<li>在HotSpot中，使用一组叫<strong>OopMap</strong>的数据结构在类加载的时候，就把对象内什么偏移量是什么类型的数据计算出来，在JIT编译过程，也会在特定的位置下记录下栈和寄存器中哪些位置是引用，在GC扫描时，就可以直接得到哪些地方存放了对象了</li>
+</ul>
+</li>
+<li><strong>安全点（SafePoint）</strong><br><em>通过OopMap可以快速且准确的完成GC Roots枚举，但可能导致引用关系变化，或者OopMap内容变化的指令非常多，若每条指令都有一个OopMap，那将需要大量的额外空间</em></li>
+<li>HotSpot不会为每一条指令生成OopMap，它只会在安全点来记录这些信息</li>
+<li>SafePoint 的选定不能太少也不能太频繁导致运行时的负荷增大，它的选定是以程序“是否具有长时间的执行的特征”的标准而选定的，长时间最明显的特征就是指令序列复用（方法调用，循环跳转，异常跳转），从而产生SafePoint</li>
+<li>GC Roots如何让所有线程停下来（不包括JNI调用的线程），然后执行到安全点，有2种方法<ul>
+<li><strong>抢断式中断（Preemptive Suspension）</strong>，在GC 发生时，把所有线程中断，然后把没有达到安全点的线程恢复运行直到到达安全点（此方法以不在使用）</li>
+<li><strong>主动式中断（Voluntary Suspension）</strong>，在GC 需要中断线程时，不直接对线程进程操作，仅仅设置一个简单的标志（安全点位置），各个线程执行时主动轮询此标志，发现中断标志时，自己中断挂起</li>
+</ul>
+</li>
+<li><strong>安全区域（Safe Region）</strong><ul>
+<li>当线程进入Sleep状态或者Blocked状态，线程无法响应JVM中断请求，JVM不会等到线程被分配Cpu时间然后运行到安全点，所以我们把这样一种状态就表示为线程进入安全区域</li>
+<li>当线程进入安全区域会把自己标示为进入Safe Region，当GC行为发生时，就不用管进入安全区域的线程，当线程要脱离Safe Region状态时，就需要检查GC是否完成，若没完成，要等待他完成后，才可以继续<h3 id="垃圾收集器（JDK-1-7-Update-14之后的HotSpot虚拟机）"><a href="#垃圾收集器（JDK-1-7-Update-14之后的HotSpot虚拟机）" class="headerlink" title="垃圾收集器（JDK 1.7 Update 14之后的HotSpot虚拟机）"></a>垃圾收集器（JDK 1.7 Update 14之后的HotSpot虚拟机）</h3><em>垃圾收集器是内存回收的具体实现，java虚拟机对垃圾收集器没有任何规定，因此不同厂商，不同版本的垃圾收集有很大的差别</em></li>
+</ul>
+</li>
+<li><strong>Serial收集器</strong><ul>
+<li>最基本，最古老的收集器</li>
+<li>单线程收集器，并不仅仅是只使用一个Cpu或一个线程去收集，而它收集的时候回暂停所有的工作线程，知道它收集结束</li>
+<li>它仍然是虚拟机运行在Client下的默认新生代收集器，因为它简单而高效（与其他单线程相比），在单线程下，Serial没有线程交互的开销，在用户桌面级下，一般虚拟机管理的内存不会太大，所以它的效率依然 高效</li>
+</ul>
+</li>
+<li><strong>ParNew 收集器</strong><ul>
+<li>ParNew为Serial收集器的多线程版本，除此之外没有太多创新之处</li>
+<li>是运行在Server模式下的虚拟机首选新生代收集器</li>
+<li>除了Serial收集器外，唯一能与CMS收集器配合工作的收集器</li>
+<li>单个CPU，ParNew没有Serial效果好，2个CPU也无法保证100%比Serial效果好，以为存在在线程的交互</li>
+</ul>
+</li>
+<li><strong>Parallel Scavenge收集器（“吞吐量优先”收集法）</strong><br>*与ParNew一样是多线程新生代收集器，使用复制算法，但是它更关注一个可控制的吞吐量，即CPU运行用户代码时间与ＣＰＵ总消耗时间的比值（吞吐量＝运行用户代码时间／（运行用户代码时间＋垃圾收集时间）），运行１００分钟，垃圾收集１分钟，吞吐量＝９９%<ul>
+<li>此方法会根据运行情况收集性能监控信息，然后动态调整参数以提供最合适的停顿时间或者最大吞吐量，这种调节叫做GC自适应调节策略（GC Ergonomics）</li>
+</ul>
+</li>
+<li><strong>Serial Old收集器</strong><ul>
+<li>是Serial收集器的老年代版本，单线程收集器，“标记——整理算法”</li>
+<li>用于Client模式下的虚拟机使用</li>
+<li>在Server模式下，2大功能：1.在JDK1.5之前是与Parallel Scavenge配合使用，2.做为CMS收集的后备预案</li>
+</ul>
+</li>
+<li><strong>Parallel Old收集器</strong><ul>
+<li>是Parallel Scavenge收集器的老版本，使用多线程和“标记——整理算法”</li>
+<li>若在注重吞吐量以及CPU资源敏感的场合，可以优先考虑Parallel Scavenge和Parallel Old组合</li>
+</ul>
+</li>
+<li><p><strong>CMS （Concurrent Mark Sweep）收集器（并发低停顿收集器）</strong></p>
+<ul>
+<li>是一种以获取最短回收停顿时间的收集器，用“标记——清除算法”，收集步骤<ul>
+<li><strong>初始标记（CMS initial mark）</strong>，需要“Stop The World”，标记GC Roots能直接关联的UI小，速度很快</li>
+<li><strong>并发标记（CMS concurrent mark）</strong>，需要“Stop The World”，进行GC Roots Tracing的过程</li>
+<li><strong>重新标记（CMS remark）</strong>，修正并发标记期间因用户程序继续运作而导致标记产生变动的那一部分对象，比初始标记时间长，远比并发标记时间段</li>
+<li><strong>并发清除（CMS concurrent sweep）</strong>，并发消除标记的对象</li>
+<li>因为用时最长的并发标记和并发消除都可以与用户线程一起工作，所以停顿低</li>
+</ul>
+</li>
+<li>CMS收集器对CPU资源很敏感（面向并发设计的程序对CPU资源都非常敏感），在并发阶段，虽然不会导致用户线程停顿，但是会因为占用了一部分CPU资源而导致应用程序变慢，所以当CPU数量太少，就会导致用户程序执行速度直线下降，为了解决此问题，虚拟机提供“增量式并发收集器”（Increment Concurrent Mark Sweep/i-CMS），所用单CPU时的抢占式来模拟多任务机制思想，交替GC线程与用户线程，但是方法效果一般，所以已经不提倡用户使用</li>
+<li>CMS收集器无法处理<strong>浮动垃圾（Floating Garbage）</strong>，可能出现“Concurrent Mode Failure”，失败后会导致Full GC（老年代回收）产生，因为CMS并发清理时用户线程还在进行，所以会不断的产生新的垃圾，这一部分垃圾无法在此次清理，只有下一次才能处理他们，所以需要预留内存空间给用户线程使用，所以需要设置一个百分比来触发Full GC，在jdk1.5为老年代使用的68%，在jdk1.6，已经上升为92%，如果在不满足此条件时，出现“Concurrent Mode Failure ”会启动预备方案：临时启用Serial Old收集器对老年代垃圾进行收集</li>
+<li>CMS是“标记——清除算法”，所以会有大量的空间碎片产生，这样就会导致老年代有很大空间，但是没有一块连续足够大的空间来分配当前对象，而触发Full GC，所以当CMS 有一参数（UsCMSCompactAtFullCollection）来停顿在要Full GC时开启碎片合并整理</li>
+</ul>
+</li>
+<li><p>G1收集器</p>
+<ul>
+<li>从JDK 6u14中就开始就提供给开发人员实验，试用，到JDK7u4，才正式使用</li>
+<li>G1收集器是面向服务端的垃圾收集器，主要目的是在未来可以替换CMS收集器</li>
+<li>与其他GC收集相比，有以下不同：<ul>
+<li><strong>并行与并发</strong>：G1收集器能够利用多CPU，多核环境下的硬件优势，使用多个CPU来缩短Stop The World停顿的时间，部分收集器需要停顿java线程来进行GC动作，但G1可以通过并发让java线程继续执行</li>
+<li><strong>分代收集</strong>：G1可以独立的管理整个GC堆，它可以采用不同的方式去处理新创建的对象和已经存活了一段时间的对象</li>
+<li><strong>空间整合</strong>：G1从整体是基于“标记——整理算法”的收集器，从局部（2个Region之间）是基于“复制算法”，但是这2种算法都不会产生空间碎片，所以不会因为创建大对象而找不到空间触发GC</li>
+<li><strong>可停顿的预测</strong>：这是G1相对于CMS的一大优势，降低停顿时间是G1和CMS共同目标，但G1还能够建立可预测的停顿时间模型，能让使用者指定一个长度为M毫秒的时间内，垃圾收集上不得超过N毫秒，这几乎是实时Java（RTSJ）的垃圾收集器特征了</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>java堆的内存布局与其他收集器有很大的差别，它将整个java堆划分为多个大小相等的独立区域（Region），保留着新生代和老年代的概念，新生代和老年代不再是物理隔离，他们都是一部分Region（不需要连续）的集合</li>
+<li>G1收集器建立可预测的停顿时间模型，是因为他能够避免在java堆中进行全区域的垃圾收集，G1跟踪各个Region里面的垃圾堆积的价值大小（回收获得的空间大小以及回收需要的时间），，在后台维护一个优先列表，每次根据回收价值最大的Region（Garbage—First的由来），这可以保证在G1在有线的时间内可以获取尽可能高的收集效率</li>
+<li>java堆虽然被划分为相等的独立区域（Region），但是Region中的对象可能被其他Region中的对象引用，所以可能被整个java堆任意对象发生引用关系，所以确保对象是否存活岂不是要扫描整个java堆，在虚拟机中使用<strong>Remembered Set</strong>来避免扫描，G1中每个Region都有一个Remembered Set，虚拟机在Reference类型数据进行写操作时会有一个Write Barrier暂时中断写操作，检测tReference引用的对象是不是在不同Region之间，如果是，便通过CardTable把相关引用信息记录到被引用对象的Region的Remembered Set之中，在GC根节点的枚举范围中加入Remembered Set即可以保证不对全堆扫描也不会有遗漏。</li>
+<li>忽略维护Remembered Set 的操作，G1收集器运行时以下步骤：<ul>
+<li><strong>初始标记（Initial Marking）</strong>，标记GC Roots能直接关联的对象，并修改TAMS（Next Top at  Mark Start）的值，让用户程序并发运行时，能够在正确可用的Region中创建新对象，需要停顿线程，但时间很短</li>
+<li><strong>并发标记（Concurrent Marking）</strong>，进行可达性分析，找出存活的对象，时间很长，但可以与用户程序并发执行</li>
+<li><strong>最终标记（Final Marking）</strong>，修正在并发标记期间因用户程序继续运行而导致标记产生变化的那一部分标记记录，虚拟机将这段时间对象变化记录在线程Remembered Set Logs里面，然后最终标记把Logs中的数据整合到Remembered Set中，需要停顿线程，但是可以并执行</li>
+<li><strong>筛选回收（Live Data Counting and Evacuation）</strong>，筛选回收价值和成本Region进行排序，根据用户所期望的GC停顿时间制定回收计划，这部分可以与用户程序并发执行<h3 id="内存分配策略"><a href="#内存分配策略" class="headerlink" title="内存分配策略"></a>内存分配策略</h3><strong>对象的内存分配，往大方向讲，就是在堆上分配（也可能进过JIT编译后被拆散为标量类型并间接地栈上分配），对象主要分配在新生代Eden 上，如果启动本地线程分配，则按线程优先在TLAB上分配，也有情况在老年代分配，分配规则很多。</strong><br>下面是几种最普遍的分配方式：</li>
+</ul>
+</li>
+<li><strong>对象优先在Eden上分配</strong></li>
+<li><strong>大对象直接进入老年代</strong></li>
+<li><strong>长期存活对象进入老年代</strong></li>
+<li><strong>动态对象年龄判断</strong></li>
+<li><strong>空间分配担保</strong></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mrnoknow.github.io/2016/12/04/垃圾收集器与内存分配策略/" data-id="cjte069as003hcyofxs4hva3b" class="article-share-link">Share</a>
+      
+        <a href="https://mrnoknow.github.io/2016/12/04/垃圾收集器与内存分配策略/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-java内存区域与内存溢出异常" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/02/java内存区域与内存溢出异常/" class="article-date">
+  <time datetime="2016-12-02T11:27:31.000Z" itemprop="datePublished">2016-12-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JAVA/">JAVA</a>►<a class="article-category-link" href="/categories/JAVA/JVM/">JVM</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/02/java内存区域与内存溢出异常/">java内存区域与内存溢出异常</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+-        <h3 id="运行时数据区域"><a href="#运行时数据区域" class="headerlink" title="运行时数据区域"></a>运行时数据区域</h3><p><img src="/images/java内存区域与内存溢出异常/2.png" alt=" "></p>
+<ul>
+<li><strong>程序计数器（Program Counter Register）</strong><ul>
+<li>是一块很小的内存空间</li>
+<li>是当前线程所执行的字节码指示器，字节码解释器执行是通过改变它的值来选取下一跳执行命令</li>
+<li>单核处理器在确定时刻只能执行一条线程中的指令，为了让线程切换后能恢复到正确的位置，每个线程都有一个独立的程序计数器，这类内存区域称为“线程私有‘’</li>
+<li>线程执行java方法，计数器记录正在执行的虚拟机字节码指令地址，若执行native方法，计数器值为空。</li>
+<li>程序计数器是唯一规定没有OutofMenoryError情况的内存</li>
+</ul>
+</li>
+<li><strong>虚拟机栈（VM Stack）</strong><ul>
+<li>描述java方法执行内存模型（字节码）</li>
+<li>虚拟机栈是线程私有</li>
+<li>每个方法执行都会创建一个帧栈，帧栈保存局部变量，操作数栈等信息，每个方法的执行都是帧栈在虚拟机栈中的入栈与出栈的过程<ul>
+<li>局部变量表存储的是基本数据类型（boolean，byte，char，short，int，float，long，double），对象引用和returnAddress类型（指向一条字节码指令的地址）</li>
+<li>long 和double 占用了2个局部变量，其他的数据类型占用1个</li>
+<li>局部变量表所需的内存空间在编译期间完成分配，在运行期间是不会被改变的</li>
+</ul>
+</li>
+<li>当java虚拟机进行动态扩展时，无法申请足够的内存将抛出OutOfMemoryError异常</li>
+<li>线程请求的栈深度大于虚拟机允许的深度将抛出StackOverflowError异常</li>
+</ul>
+</li>
+<li><strong>本地方法栈（Native Method Stack）</strong><br> <strong>与虚拟机栈相似</strong><ul>
+<li>描述native方法执行的内存模型。</li>
+<li>对使用的语言，使用方式与数据结构没有强制要求，虚拟机可自由使用它。</li>
+<li>有的将本地方法栈与虚拟机栈合二为一（Sun HotSpot虚拟机）</li>
+<li>抛出OutOfMenmoryError与StackOverflowError异常</li>
+</ul>
+</li>
+<li><strong>Java堆（Java Heap）</strong><ul>
+<li>是虚拟机管理的内存最大的一块</li>
+<li>唯一目的是存放对象实例</li>
+<li>几乎所有的对象实例都在堆上分配内存（随着JIT编译器的发展与逃逸分析技术的成熟，栈上分配与标量替换优化技术导致堆上分配不是那么绝对）</li>
+<li>垃圾收集器（GC）管理的主要区域，因此很多时候被称作“”GC堆“”</li>
+<li>可以处于物理上不连续的内存空间，但逻辑要连续</li>
+<li>在实现上，可实现固定大小，也可扩展（当前主流都可扩展）</li>
+<li>当堆中没有内存完成实例分配，且堆无法再扩展时，抛出OutOfMenmoryError异常</li>
+</ul>
+</li>
+<li><strong>方法区（Method Area）</strong><ul>
+<li>存储被虚拟机加载的类信息，常量，静态变量，即时编译器编译后的代码等数据</li>
+<li>在实现上，可实现固定大小，也可扩展（当前主流都可扩展）</li>
+<li>垃圾收集行为在这个区域比较少出现，回收目标主要是：常量池的回收和对类型的卸载（类型的卸载回收条件苛刻），这部分回收是非常必要的，否则会导致内存泄露</li>
+<li>当方法区无法满足内存分配需求时，抛出OutOfMenmoryError异常</li>
+<li><strong>运行时常量池（Runtime Constant Pool）</strong><br><em>class文件除了有类型的版本，字段，方法，接口等描述信息外，还有常量池（Constant Pool Table）用于存放编译期生成的各种字面量和符号引用，这些内容在类加载后进入方法区的运行时常量池中保存</em><ul>
+<li>java虚拟机对Class文件每个文件（包括常量池）格式都有严格的规定，但是对运行时常量池没有做任何细节要求（不同的提供商实现的虚拟机可根据自己的要求来实现这部分）</li>
+<li>翻译出来的直接引用也存储在运行时常量池中</li>
+<li>java语言不要求常量一定在编译期时产生，也就是并非与预置入 Class文件中常量池内容才能进入运行时常量池，运行期间也能将新的常量放入池中（String类的intern（）方法）</li>
+<li>无法申请到内存时抛出OutOfMenmoryError异常</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>直接内存（Direct Memory）</strong><ul>
+<li>并不是虚拟机运行时数据区的一部分，也不是java虚拟机规范中定义的内存区域，但这部分内存被频繁使用</li>
+<li>在jdk1.4中新加入NIO（New Input/Output）类，引入基于通道（Channel）与缓冲区（Buffer）的I/O方式，它用Native函数库直接分配堆外内存，然后通过java堆中的DirectByteBuffer对象作为这块内存的引用操作，避免java堆和Native堆中来回复制数据</li>
+<li>直接内存不受java虚拟机的限制，受本机内存大小以及处理器寻址空间的限制，当内存区域大于物理内存限制，抛出OutOfMenmoryError异常<h3 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h3></li>
+</ul>
+</li>
+<li><strong>对象创建</strong><ul>
+<li>虚拟机遇到new指令时，首先去检测这个指令参数是否能在常量池中定位到一个类的符号引用，检测这个符号引用代表的类是否已被加载，解析和初始化过，若没有则进行类加载过程</li>
+<li>类加载完成后（所需内存确定），虚拟机为对象分配内存（从java堆中分配一块内存）</li>
+<li>2种分配方式：<ul>
+<li><strong>指针碰撞（Bump the Pointer）</strong>,若java堆中的内存时绝对规整的，所有用过的在一边，没有用过的在一边，中间放着一个指针作为分界点的指示器，分配内存就仅仅是把那个指针向空闲的空间那边挪到一段与对象大小相等的距离</li>
+<li><strong>空闲列表（Free List）</strong>，如java堆内存不是规整的，使用和未使用的内存相互交错，虚拟机就必须维护一个列表记录那些内存可用，分配时从列表中找一块足够大的内存划分给对象实例，然后刷新列表<ul>
+<li>内存分配完后，虚拟机将分配到的内存空间都初始化为零值（不包括对象头），若使用TLAB，这个过程可提前在TLAB分配时进行</li>
+<li>对对象进行设置，例如对象是那个类的实例，如何找到类的元数据信息，对象的哈希码等，存放在对象的对象头</li>
+<li>以上完成后，从虚拟机计角度，对象已经创建，但是从java程序角度来看，对象创建刚开始，执行<init>方法后，按照程序员的意愿初始化后，对象才正真创建</init></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>对象的内存布局<ul>
+<li><strong>对象头（Header）</strong><ul>
+<li>Mark Word，用于存储对象自身本身运行时的数据（哈希表，GC分代年龄，线程持有的锁等）</li>
+<li>类型指针，对象指向它的类元数据的指针，虚拟机通过这个来确定对象是那个类型的实例（不是所有虚拟机都必须在对象数据中保留类型指针，即查找对象不一定要经过对象本身），java数组还需要一个记录数组长度的数据</li>
+</ul>
+</li>
+<li><strong>实例数据（Instance Data）</strong><ul>
+<li>对象真正存储的有效信息，即代码中定义的各种类型的字段内容</li>
+<li>这部分存储顺序受到虚拟机分配策略参数（FieldsAllocationStyle）和java源码定义顺序影响</li>
+</ul>
+</li>
+<li>对齐填充（Padding）<br><em>这部分不是必要存在</em><ul>
+<li>起占位符作用，对象起始地址必须是8字节的整数倍，当没有8字节整数倍时，就填充</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>对象访问地址</strong><br><strong>java程序通过栈中的reference类型数据来操作堆上的具体对象，reference类型被规定是一个指向对象的引用</strong><ul>
+<li><strong>句柄访问</strong>，java堆划分一块内存做为句柄池，reference存储句柄地址，句柄包含对象实例和类型数据各自的具体地址信息（稳定）<br><img src="/images/java内存区域与内存溢出异常/1.png" alt=" "></li>
+<li><strong>直接访问</strong>，reference存储是对象地址（快速）<br><img src="/images/java内存区域与内存溢出异常/3.png" alt=" "></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mrnoknow.github.io/2016/12/02/java内存区域与内存溢出异常/" data-id="cjte0699l0015cyof10de1hkv" class="article-share-link">Share</a>
+      
+        <a href="https://mrnoknow.github.io/2016/12/02/java内存区域与内存溢出异常/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/JVM/">JVM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/jsp/">jsp</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/Hexo/">Hexo</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/sql/">sql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/">虚拟机</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Ubuntu-server/">Ubuntu server</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统/">计算机系统</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Coding/">Coding</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二进制编码/">二进制编码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Coding/" style="font-size: 13.33px;">Coding</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/二进制编码/" style="font-size: 10px;">二进制编码</a> <a href="/tags/读书笔记/" style="font-size: 16.67px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/19/Android-视频播放自定义布局/">Android 视频播放自定义布局</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/14/Reduce-APK-Size/">Reduce APK Size</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/02/Android-4大组件特点/">Android 4大组件特点</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/28/多线程简单介绍/">多线程简单介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/20/RecyclerView简单复用适配器的实现/">RecyclerView简单复用适配器的实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Fun&#39;s biog<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'fun-7';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

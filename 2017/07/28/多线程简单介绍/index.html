@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>多线程简单介绍 | Fun&#39;s biog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Thread 与 Runnable的比较 Thread需要继承实现，而Java中是单继承，所以我一般不常用Thread，而是使用Runnable接口实现多线程  关于多线程的几个方法 sleep()：让当前线程进入休眠状态（线程不会释放获得的锁），参数设置休眠时间。 yield()：让步，让不低于自己优先级的线程有机会">
+<meta name="keywords" content="读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多线程简单介绍">
+<meta property="og:url" content="https://mrnoknow.github.io/2017/07/28/多线程简单介绍/index.html">
+<meta property="og:site_name" content="Fun&#39;s biog">
+<meta property="og:description" content="Thread 与 Runnable的比较 Thread需要继承实现，而Java中是单继承，所以我一般不常用Thread，而是使用Runnable接口实现多线程  关于多线程的几个方法 sleep()：让当前线程进入休眠状态（线程不会释放获得的锁），参数设置休眠时间。 yield()：让步，让不低于自己优先级的线程有机会运行。（不会释放获取的锁）  interrupt()：终止哪些调用中断方法进入阻">
+<meta property="og:updated_time" content="2019-03-18T06:44:47.919Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="多线程简单介绍">
+<meta name="twitter:description" content="Thread 与 Runnable的比较 Thread需要继承实现，而Java中是单继承，所以我一般不常用Thread，而是使用Runnable接口实现多线程  关于多线程的几个方法 sleep()：让当前线程进入休眠状态（线程不会释放获得的锁），参数设置休眠时间。 yield()：让步，让不低于自己优先级的线程有机会运行。（不会释放获取的锁）  interrupt()：终止哪些调用中断方法进入阻">
+  
+    <link rel="alternate" href="/atom.xml" title="Fun&#39;s biog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Fun&#39;s biog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个只会搬砖，不会写博客的不入流程序猿</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mrnoknow.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-多线程简单介绍" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/28/多线程简单介绍/" class="article-date">
+  <time datetime="2017-07-28T06:04:38.000Z" itemprop="datePublished">2017-07-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      多线程简单介绍
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+-        <h4 id="Thread-与-Runnable的比较"><a href="#Thread-与-Runnable的比较" class="headerlink" title="Thread 与 Runnable的比较"></a>Thread 与 Runnable的比较</h4><ul>
+<li>Thread需要继承实现，而Java中是单继承，所以我一般不常用Thread，而是使用Runnable接口实现多线程</li>
+</ul>
+<h4 id="关于多线程的几个方法"><a href="#关于多线程的几个方法" class="headerlink" title="关于多线程的几个方法"></a>关于多线程的几个方法</h4><ul>
+<li>sleep()：让当前线程进入休眠状态（<strong>线程不会释放获得的锁</strong>），参数设置休眠时间。</li>
+<li><p>yield()：让步，让不低于自己优先级的线程有机会运行。（<strong>不会释放获取的锁</strong>）</p>
+</li>
+<li><p>interrupt()：终止哪些调用中断方法进入阻塞状态的线程。（<strong>sleep，wait，join都是中断方法</strong>）</p>
+</li>
+<li><p>join()： 当前线程对一个线程调用此方法，当前线程就会停止运行，直到另一个线程执行完成后，才会继续执行当前线程。（<strong>会释放获得的锁，join方法内部调用了wait方法</strong>）</p>
+</li>
+<li><p>wait()：此方法是object的实例方法，让当前线程进入阻塞状态。（<strong>释放获取对象的内部锁</strong>）可通过notify和notifyall来唤醒</p>
+</li>
+<li><p>notify()/notifyall()：是Object的实例方法，notify()是唤醒等待该对象的线程，而notifall()是唤醒所有等待的对象。</p>
+</li>
+</ul>
+<h4 id="synchronized关键字"><a href="#synchronized关键字" class="headerlink" title="synchronized关键字"></a>synchronized关键字</h4><ul>
+<li>Java中的每个对象都有一个内部锁，每个类都有一个锁，控制多线程对其静态成员的并发访问。如果一个实例方法使用synchronized关键字修饰，内部锁就会监听这个方法，只有获取到该对象内部锁的线程才能执行此方法。</li>
+<li>对象的内部锁在同一时刻只能由一个线程持有，其他线程尝试获取该对象内部锁都会被阻塞，这种情况下的阻塞不会被中断。</li>
+</ul>
+<h4 id="volatile域"><a href="#volatile域" class="headerlink" title="volatile域"></a>volatile域</h4><ul>
+<li>此关键字可以保证实例域是可见的，通常当我们访问内存中的变量时，就会把它缓存在寄存器中，当需要读这个值时，直接从寄存器拿取，进行加减运算时，直接将寄存器中的值进行加减运行，结束后将值写回内存，问题就出来了，对一个线程对flag变量进行操作，先将flag放进寄存器中，准备将它加上2，这个时候，另一个线程抢占了资源，对flag值进行操作，进行了加3的操作，并将flag写回了内存，这时，第一个线程对flag继续进行操作，对原来的flag值进行操作，加2，然后写回内存，当我们读取时就会发现，flag值为2，所以volatile就是为了解决该问题，就是每次访问变量时，直接从内存拿值，而不会从寄存器中获取。</li>
+</ul>
+<h5 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h5><ul>
+<li>Java核心技术点之多线程 <a href="http://www.cnblogs.com/absfree/p/5327678.html" target="_blank" rel="noopener">http://www.cnblogs.com/absfree/p/5327678.html</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mrnoknow.github.io/2017/07/28/多线程简单介绍/" data-id="cjte0699r001hcyofrv9vhi4v" class="article-share-link">Share</a>
+      
+        <a href="https://mrnoknow.github.io/2017/07/28/多线程简单介绍/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/08/02/Android-4大组件特点/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Android 4大组件特点
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/07/20/RecyclerView简单复用适配器的实现/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">RecyclerView简单复用适配器的实现</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/JVM/">JVM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/jsp/">jsp</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/Hexo/">Hexo</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/sql/">sql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/">虚拟机</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Ubuntu-server/">Ubuntu server</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统/">计算机系统</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Coding/">Coding</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二进制编码/">二进制编码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Coding/" style="font-size: 13.33px;">Coding</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/二进制编码/" style="font-size: 10px;">二进制编码</a> <a href="/tags/读书笔记/" style="font-size: 16.67px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/19/Android-视频播放自定义布局/">Android 视频播放自定义布局</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/14/Reduce-APK-Size/">Reduce APK Size</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/02/Android-4大组件特点/">Android 4大组件特点</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/28/多线程简单介绍/">多线程简单介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/20/RecyclerView简单复用适配器的实现/">RecyclerView简单复用适配器的实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Fun&#39;s biog<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'fun-7';
+  
+  var disqus_url = 'https://mrnoknow.github.io/2017/07/28/多线程简单介绍/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

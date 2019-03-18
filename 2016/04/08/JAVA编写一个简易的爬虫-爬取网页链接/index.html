@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>JAVA编写一个简易的爬虫(爬取网页链接) | Fun&#39;s biog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这个简易的爬虫需要jsoup包，一个java的第三方包 jsoup包有什么作用（在这个简易的爬虫程序中）？在这个简易的程序中，所需要的是jsoup包中的123456import org.jsoup.Jsoup;import org.jsoup.nodes.Document;import org.jsoup.nodes.">
+<meta name="keywords" content="Coding">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVA编写一个简易的爬虫(爬取网页链接)">
+<meta property="og:url" content="https://mrnoknow.github.io/2016/04/08/JAVA编写一个简易的爬虫-爬取网页链接/index.html">
+<meta property="og:site_name" content="Fun&#39;s biog">
+<meta property="og:description" content="这个简易的爬虫需要jsoup包，一个java的第三方包 jsoup包有什么作用（在这个简易的爬虫程序中）？在这个简易的程序中，所需要的是jsoup包中的123456import org.jsoup.Jsoup;import org.jsoup.nodes.Document;import org.jsoup.nodes.Element;import org.jsoup.select.Elements">
+<meta property="og:updated_time" content="2019-03-18T06:44:47.914Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JAVA编写一个简易的爬虫(爬取网页链接)">
+<meta name="twitter:description" content="这个简易的爬虫需要jsoup包，一个java的第三方包 jsoup包有什么作用（在这个简易的爬虫程序中）？在这个简易的程序中，所需要的是jsoup包中的123456import org.jsoup.Jsoup;import org.jsoup.nodes.Document;import org.jsoup.nodes.Element;import org.jsoup.select.Elements">
+  
+    <link rel="alternate" href="/atom.xml" title="Fun&#39;s biog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Fun&#39;s biog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个只会搬砖，不会写博客的不入流程序猿</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mrnoknow.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-JAVA编写一个简易的爬虫-爬取网页链接" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/08/JAVA编写一个简易的爬虫-爬取网页链接/" class="article-date">
+  <time datetime="2016-04-08T09:41:05.000Z" itemprop="datePublished">2016-04-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JAVA编写一个简易的爬虫(爬取网页链接)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+-        <p>这个简易的爬虫需要jsoup包，一个java的第三方包</p>
+<h2 id="jsoup包有什么作用（在这个简易的爬虫程序中）？"><a href="#jsoup包有什么作用（在这个简易的爬虫程序中）？" class="headerlink" title="jsoup包有什么作用（在这个简易的爬虫程序中）？"></a>jsoup包有什么作用（在这个简易的爬虫程序中）？</h2><p>在这个简易的程序中，所需要的是jsoup包中的<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">org</span><span class="selector-class">.jsoup</span><span class="selector-class">.Jsoup</span>;</span><br><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">org</span><span class="selector-class">.jsoup</span><span class="selector-class">.nodes</span><span class="selector-class">.Document</span>;</span><br><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">org</span><span class="selector-class">.jsoup</span><span class="selector-class">.nodes</span><span class="selector-class">.Element</span>;</span><br><span class="line"><span class="selector-tag">import</span> <span class="selector-tag">org</span><span class="selector-class">.jsoup</span><span class="selector-class">.select</span><span class="selector-class">.Elements</span>;</span><br><span class="line">这几个类。</span><br><span class="line">主要是解析网页中的标签，直接抽取网页链接</span><br></pre></td></tr></table></figure></p>
+<h2 id="代码如下"><a href="#代码如下" class="headerlink" title="代码如下"></a>代码如下</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> org.jsoup.Jsoup;</span><br><span class="line"><span class="keyword">import</span> org.jsoup.nodes.Document;</span><br><span class="line"><span class="keyword">import</span> org.jsoup.nodes.Element;</span><br><span class="line"><span class="keyword">import</span> org.jsoup.select.Elements;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DocOperate</span> </span>&#123;</span><br><span class="line">	<span class="type">UrlOperate</span> urlGet=new <span class="type">UrlOperate</span>();</span><br><span class="line">	<span class="keyword">public</span> void <span class="type">LinkAcquisition</span>(<span class="type">String</span> url) <span class="keyword">throws</span> <span class="type">IOException</span> &#123;<span class="comment">//链接获取</span></span><br><span class="line">		urlGet.<span class="type">ArrayAdd</span>(url);</span><br><span class="line">		<span class="type">System</span>.out.<span class="built_in">println</span>(url);	</span><br><span class="line">		<span class="type">Document</span> doc;</span><br><span class="line">	    <span class="keyword">try</span> &#123;</span><br><span class="line">			doc = <span class="type">Jsoup</span>.connect(url).timeout(<span class="number">5000</span>).<span class="keyword">get</span>();<span class="comment">//解析网页内容，设置连接时间</span></span><br><span class="line">			 <span class="type">Elements</span> links = doc.select(<span class="string">"a[href]"</span>);<span class="comment">//获取所有网页链接</span></span><br><span class="line">			    <span class="keyword">for</span> (<span class="type">Element</span> link : links) &#123;</span><br><span class="line">			    	</span><br><span class="line">			          <span class="type">String</span> linkHref = link.attr(<span class="string">"abs:href"</span>);<span class="comment">//获取单个链接</span></span><br><span class="line">			          <span class="keyword">if</span>(linkHref!=<span class="string">""</span>)&#123;</span><br><span class="line">			               <span class="comment">//System.out.println(linkHref);</span></span><br><span class="line">			               urlGet.<span class="type">LinkedAdd</span>(linkHref);&#125;<span class="comment">//添加到待爬取链接</span></span><br><span class="line">			          &#125;</span><br><span class="line">			         <span class="type">LinkRepeatJudgment</span>();<span class="comment">//执行链接重复的判断</span></span><br><span class="line">		&#125; <span class="keyword">catch</span> (<span class="type">Exception</span> e) &#123;<span class="comment">//如果出现异常，就直接执行链接重复判断</span></span><br><span class="line">			<span class="type">LinkRepeatJudgment</span>();</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; </span><br><span class="line">	<span class="keyword">public</span> void <span class="type">LinkRepeatJudgment</span>() <span class="keyword">throws</span> <span class="type">IOException</span> &#123;<span class="comment">//链接重复判断</span></span><br><span class="line">		<span class="keyword">if</span>(!urlGet.<span class="type">IsEmpty</span>())&#123;<span class="comment">//如果待爬取链接不为空</span></span><br><span class="line">			<span class="type">String</span> url=urlGet.<span class="type">GetUrl</span>();<span class="comment">//获取第一个待爬取链接</span></span><br><span class="line">			urlGet.<span class="type">Remove</span>(url);<span class="comment">//移除待爬取链接的第一个</span></span><br><span class="line">			<span class="keyword">if</span>(urlGet.<span class="type">CompareUrl</span>(url))&#123;<span class="comment">//如果该链接被爬取，继续执行此方法</span></span><br><span class="line">			<span class="comment">//System.out.println(url);</span></span><br><span class="line">				<span class="type">LinkRepeatJudgment</span>();</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;否则执行链接重复判断</span><br><span class="line">			    </span><br><span class="line">		        <span class="type">LinkAcquisition</span>(url);&#125;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="type">System</span>.out.<span class="built_in">println</span>(<span class="string">"game over"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上是工具类，主要用于抓取网页链接。<br><figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.LinkedList;</span><br><span class="line"><span class="keyword">public</span> class UrlOperate &#123;</span><br><span class="line">	<span class="keyword">private</span> LinkedList&lt;<span class="keyword">String</span>&gt; linked=<span class="keyword">new</span> LinkedList&lt;<span class="keyword">String</span>&gt;();<span class="comment">//待爬取链接</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">private</span> ArrayList&lt;<span class="keyword">String</span>&gt; arry=<span class="keyword">new</span> ArrayList&lt;<span class="keyword">String</span>&gt;();<span class="comment">//以爬取链接</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> LinkedAdd(<span class="keyword">String</span> url)&#123;<span class="comment">//添加待爬取链接</span></span><br><span class="line">		linked.<span class="built_in">add</span>(url);	</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> Remove(<span class="keyword">String</span> url)&#123;<span class="comment">//爬取链接移除</span></span><br><span class="line">		</span><br><span class="line">		linked.remove(url);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">String</span> GetUrl()&#123;<span class="comment">//得到待爬取第一个链接</span></span><br><span class="line">		<span class="keyword">return</span> linked.getFirst();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">boolean</span> IsEmpty()&#123;<span class="comment">//判断待爬取链接是否为空</span></span><br><span class="line">		<span class="keyword">return</span> linked.isEmpty();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> LinkedList&lt;<span class="keyword">String</span>&gt; getHash()&#123;</span><br><span class="line">		<span class="keyword">return</span> linked;</span><br><span class="line">	&#125; </span><br><span class="line">	</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> ArrayAdd(<span class="keyword">String</span> url)&#123;<span class="comment">//以爬取链接的添加</span></span><br><span class="line">		arry.<span class="built_in">add</span>(url);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">boolean</span> CompareUrl(<span class="keyword">String</span> url)&#123;<span class="comment">//判断将爬取链接是否已存在于以爬取链接中</span></span><br><span class="line">		<span class="keyword">return</span> arry.contains(url);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以上代码为网页链接的存取以及判断是否被爬取，对象类。<br><figure class="highlight haxe"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Spider</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> void main(<span class="keyword">String</span> args[]) throws IOException&#123;</span><br><span class="line">		<span class="keyword">String</span> line=<span class="literal">null</span>;</span><br><span class="line">		<span class="keyword">String</span> url=<span class="string">"http://mrnoknow.github.io/"</span>;</span><br><span class="line">		DocOperate operate=<span class="keyword">new</span> <span class="type">DocOperate</span>();</span><br><span class="line">		operate.LinkAcquisition(url);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>完成。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mrnoknow.github.io/2016/04/08/JAVA编写一个简易的爬虫-爬取网页链接/" data-id="cjte069930006cyofpcv5x85q" class="article-share-link">Share</a>
+      
+        <a href="https://mrnoknow.github.io/2016/04/08/JAVA编写一个简易的爬虫-爬取网页链接/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Coding/">Coding</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/09/Lambda表达式遍历java集合/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Lambda表达式遍历java集合
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/26/符号扩展和零扩展（深入理解计算机系统）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">符号扩展和零扩展（深入理解计算机系统）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/JVM/">JVM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/jsp/">jsp</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/Hexo/">Hexo</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/sql/">sql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/">虚拟机</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Ubuntu-server/">Ubuntu server</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统/">计算机系统</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Coding/">Coding</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二进制编码/">二进制编码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Coding/" style="font-size: 13.33px;">Coding</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/二进制编码/" style="font-size: 10px;">二进制编码</a> <a href="/tags/读书笔记/" style="font-size: 16.67px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/19/Android-视频播放自定义布局/">Android 视频播放自定义布局</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/14/Reduce-APK-Size/">Reduce APK Size</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/02/Android-4大组件特点/">Android 4大组件特点</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/28/多线程简单介绍/">多线程简单介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/20/RecyclerView简单复用适配器的实现/">RecyclerView简单复用适配器的实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Fun&#39;s biog<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'fun-7';
+  
+  var disqus_url = 'https://mrnoknow.github.io/2016/04/08/JAVA编写一个简易的爬虫-爬取网页链接/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

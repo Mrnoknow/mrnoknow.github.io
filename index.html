@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Fun&#39;s biog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="biog.fun.know">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fun&#39;s biog">
+<meta property="og:url" content="https://mrnoknow.github.io/index.html">
+<meta property="og:site_name" content="Fun&#39;s biog">
+<meta property="og:description" content="biog.fun.know">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fun&#39;s biog">
+<meta name="twitter:description" content="biog.fun.know">
+  
+    <link rel="alternate" href="/atom.xml" title="Fun&#39;s biog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Fun&#39;s biog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">一个只会搬砖，不会写博客的不入流程序猿</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://mrnoknow.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Android-视频播放自定义布局" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/01/19/Android-视频播放自定义布局/" class="article-date">
+  <time datetime="2018-01-19T07:40:57.000Z" itemprop="datePublished">2018-01-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/19/Android-视频播放自定义布局/">Android 视频播放自定义布局</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+-        <p>在Android开发中，会遇到这样一个问题，需要在App中添加一个视频，但是功能又不需要很复杂，如果我们导入一个很大的视频库的话，会增加我们App的size，所以我们就需要自制一个简易的视频，并且可以自定义它的样式。<br>接下来就介绍一下怎样快速的自己写一个可自定义样式的视频。</p>
+<h5 id="VideoView（Android封装的播放器）"><a href="#VideoView（Android封装的播放器）" class="headerlink" title="VideoView（Android封装的播放器）"></a>VideoView（Android封装的播放器）</h5><p>我们先看看Android自带的视频播放器，VideoView就是AndroidAPI中的自带视频播放器，其设计有以下几点：</p>
+<ul>
+<li>VideoView继承SurfaceView</li>
+<li>VideoView用的视频播放器是Android自带的MediaPlayer</li>
+<li>控制VideoView播放器视图的是MediaController，控制一些基本的操作的视图，比如快进，后退，播放占等播放状态</li>
+</ul>
+<p>所以如果我们不需要自定义视图，且功能非常的简单，我们就直接可以使用VideoView播放器</p>
+<p><strong>在VideoView中，需要明白的是SurfaceView，MediaController和MediaPlayer各个标注位，SurfaceView是承接MediaPlayer的视图，MediaController是控制MediaPlayer的视图</strong><br>所以我们自定义视频播放器的话，也可以按照这个思路来，播放器继承SurfaceView，在写一个控制视图。其实我在想为什么不设计一个小的库，然后我们直接写一个布局传进去，然后就能得到我们想要的播放的样式，这个难点<br>就是我们传进去的视图组件需要绑定监听啊，所以这点还是我现在无法想到解决办法的，所以我们可以实现一个播放视图，然后自己实现一个控制视图去控制它，所以我们只要把这个思路搞清楚其实就是码代码的事情和对一些逻辑<br>标志位的处理就行了，还有就是对Android各个自定义系统的适配问题了，因为视频这个问题很多坑。</p>
+<h4 id="逻辑结构"><a href="#逻辑结构" class="headerlink" title="逻辑结构"></a>逻辑结构</h4><p>这里先整理一下这个视频的整个逻辑<br>先要知道的是几个逻辑点：</p>
+<ul>
+<li>连接wifi自动播放</li>
+<li>连接流量出现播放按钮，不自动播放</li>
+<li>无网状态：<ul>
+<li>在开始加载状态突然无网，一直出现加载loading</li>
+<li>播放状态无网，播放到加载处，暂停，记录暂停位置，然后出现无网logo</li>
+<li>播放状态无网，拖动进度条。直接出现无网logo，暂停，记录暂停位置</li>
+</ul>
+</li>
+<li>点击无网状态logo，判断是否连接网络，若有网络，直接加载，否则还显示无网logo</li>
+<li>加载loading的出现时机与消失时机，在开始时出现。在拖动进度条，若是没有被加载，则出现loading，否则不显示loading，API版本不同的适配</li>
+<li>前后台切换，对视频状态的保存和恢复，以及不同Android平台的适配，这个坑太多</li>
+</ul>
+<p>以上大概就是视频播放的一些必要点，虽然看着这个逻辑不是很多，但是要把这些点串起来，并且去适配各种不同的平台和API还是有很多东西需要考虑的</p>
+<p>上面这张图就是一个网络视频播放器的简单流程图。</p>
+<h4 id="代码结构"><a href="#代码结构" class="headerlink" title="代码结构"></a>代码结构</h4><ul>
+<li>WMVideoGesture：手势操作类</li>
+<li>IController：WMVideoController绑定Activity生命周期接口</li>
+<li>ControllerChangeView：视图控件显示隐藏接口</li>
+<li>WMMediaInterface：视频播放生命周期接口</li>
+<li>WMVideoController：控制视频的视图，继承WMVideoGesture</li>
+<li>WMVideoView：视频实现类，内部是MediaPlayer，继承SurfaceView，实现WMMediaInterface接口</li>
+</ul>
+<h4 id="逻辑细节梳理"><a href="#逻辑细节梳理" class="headerlink" title="逻辑细节梳理"></a>逻辑细节梳理</h4>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mrnoknow.github.io/2018/01/19/Android-视频播放自定义布局/" data-id="cjte069910004cyofl950vruo" class="article-share-link">Share</a>
+      
+        <a href="https://mrnoknow.github.io/2018/01/19/Android-视频播放自定义布局/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Coding/">Coding</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Reduce-APK-Size" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/12/14/Reduce-APK-Size/" class="article-date">
+  <time datetime="2017-12-14T08:14:41.000Z" itemprop="datePublished">2017-12-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/14/Reduce-APK-Size/">Reduce APK Size</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+-        <p>在开发Android工程中，要尽量减少APK的大小，提高性能</p>
+<h3 id="理解Apk的结构"><a href="#理解Apk的结构" class="headerlink" title="理解Apk的结构"></a>理解Apk的结构</h3><ul>
+<li><p><code>META-INF/</code>:包含<code>CERT.SF</code>和<code>CERT.RSA</code>签名文件，还包括<code>MANIFEST.MF</code>的文件清单</p>
+</li>
+<li><p><code>assets/</code>:直接打包进APK的资源，不会直接在<code>R.java</code>生成资源ID，可使用<a href="https://developer.android.google.cn/reference/android/content/res/AssetManager.html" target="_blank" rel="noopener">AssetManager</a>来对它进行引用使用</p>
+</li>
+<li><p><code>res/</code>:包含不编译成<code>resources.arsc</code>的资源</p>
+</li>
+<li><p><code>lib/</code>:包含不同处理器的编译代码，包含各个平台类型，比如<code>armeabi, armeabi-v7a, arm64-v8a, x86, x86_64, and mips.</code></p>
+<p><strong>APK还包含以下几个部分，除了<code>AndroidManifest.xml</code>是必须的，其他都是不强制的</strong></p>
+</li>
+<li><p><code>resources.arsc</code>:包含所有配置的XML内容来自<code>res/values/</code>文件夹，通过工具获取XML内容，然后编译二进制文件，然后归档内容,内容包括字符串和样式，但是不包括内容的路径，例如布局文件和图片</p>
+</li>
+<li><p><code>classes.dex</code>:包含通过<strong>Dalvik/ART</strong>虚拟机编译java源码生成的DEX文件</p>
+</li>
+<li><p><code>AndroidManifest.xml</code>:包含核心的Android清单文件，此文件包含应用的名称，权限，版本，引用的库。此文件是二进制文件</p>
+</li>
+</ul>
+<h3 id="减少资源文件的数量和大"><a href="#减少资源文件的数量和大" class="headerlink" title="减少资源文件的数量和大"></a>减少资源文件的数量和大</h3><p><em>APK的大小会影响APP的性能，如加载速度，内存的使用，以及电力的消耗。一个很常见的减少APK大小的方法就是减少资源文件的数量和大小，比如，你可以移除不在使用的资源，使用可以扩展的<a href="https://developer.android.google.cn/reference/android/graphics/drawable/Drawable.html" target="_blank" rel="noopener">Drawable</a>对象来代替图像文件，所以接下来就是讨论怎样减少资源文件的数量和大小</em></p>
+<h5 id="删除不使用的资源文件"><a href="#删除不使用的资源文件" class="headerlink" title="删除不使用的资源文件"></a>删除不使用的资源文件</h5><ul>
+<li><p><a href="https://developer.android.google.cn/studio/write/lint.html" target="_blank" rel="noopener">lint</a>工具是AS中自带的静态代码分析器，检测<code>res/</code>文件下没有被引用的资源，当检测发现了没有被引用的资源后会输出像以下的警告。</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res/layout/preferences.xml: Warning: The<span class="built_in"> resource </span>R.layout.preferences appears</span><br><span class="line">  <span class="keyword">to</span> be unused [UnusedResources]</span><br></pre></td></tr></table></figure>
+<p><strong>但是Lint工具无法扫描检测<code>assets/</code>文件夹，因为此文件夹下的是通过反射引用的资源或者是链接的库文件，所以它是不可以的移除的资源，它只会存在一个提醒</strong><br><code>Libraries</code>代码库中也可能存在不被使用的情况,<code>Gradle</code>可以自动的移除这些无用的资源当你在<code>build.gradle</code>文件中配置<a href="https://developer.android.google.cn/studio/build/shrink-code.html" target="_blank" rel="noopener">shrinkResources</a>。</p>
+<figure class="highlight puppet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">android</span> &#123;</span><br><span class="line">  // Other <span class="keyword">settings</span></span><br><span class="line"></span><br><span class="line">  buildTypes &#123;</span><br><span class="line">      release &#123;</span><br><span class="line">          minifyEnabled <span class="keyword">true</span></span><br><span class="line">          shrinkResources <span class="keyword">true</span></span><br><span class="line">          proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>), <span class="string">'proguard-rules.pro'</span></span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用<a href="https://developer.android.google.cn/studio/build/shrink-code.html" target="_blank" rel="noopener">shrinkResources</a>，就必须使用代码压缩，在构建的过程中，<a href="https://developer.android.google.cn/studio/build/shrink-code.html" target="_blank" rel="noopener">ProGuard</a>会首先移除未使用的代码但不会移除未使用的资源，之后<code>Gradle</code>会移除未使用的资源，（关于ProGuard和其他方法的来压缩代码和资源可学习此文章<a href="https://developer.android.google.cn/studio/build/shrink-code.html" target="_blank" rel="noopener">Shrink Your Code and Resources</a>）</p>
+</li>
+</ul>
+<h5 id="减少资源库"><a href="#减少资源库" class="headerlink" title="减少资源库"></a>减少资源库</h5><ul>
+<li>在开发中我们肯定会使用外部库来提高我们应用的可用性，所以<a href="https://developer.android.google.cn/topic/libraries/support-library/index.html" target="_blank" rel="noopener">库</a>中会包含很多对象和方法是不需要，所以如果许可证认可，可以去动态的编辑库文件，增加删除库文件，来定制自己的APP内容，<a href="https://developer.android.google.cn/studio/build/shrink-code.html" target="_blank" rel="noopener">ProGuard</a>可以移除不使用的库中代码，但是它不能够移除库中的内部依赖项</li>
+</ul>
+<h5 id="支持特定的屏幕密度"><a href="#支持特定的屏幕密度" class="headerlink" title="支持特定的屏幕密度"></a>支持特定的屏幕密度</h5><ul>
+<li>若只有一小部分的用户使用，则需要特殊处理，如果你APP中不包含这些特定的<a href="https://developer.android.google.cn/about/dashboards/index.html#Screens" target="_blank" rel="noopener">屏幕密度</a>，android会自动缩放现有的资源。如果你需要自动缩放的资源，你可以通过绘制图像的变种放置<code>drawable-nodpi/</code>来节省空间，我们建议至少存在一个<code>xxhdpi</code>的图片变种</li>
+</ul>
+<h5 id="使用Drawable对象"><a href="#使用Drawable对象" class="headerlink" title="使用Drawable对象"></a>使用<code>Drawable</code>对象</h5><ul>
+<li>一些图片不需要静态的图片资源而是在运行的时候动态的绘制图片，<a href="https://developer.android.google.cn/reference/android/graphics/drawable/Drawable.html" target="_blank" rel="noopener">Drawable</a>对象（<code>shape</code> in XML）在APK中占用很少的资源，并且<a href="https://developer.android.google.cn/reference/android/graphics/drawable/Drawable.html" target="_blank" rel="noopener">Drawable</a>符合<strong>md</strong>的设计原则</li>
+</ul>
+<h5 id="复用资源"><a href="#复用资源" class="headerlink" title="复用资源"></a>复用资源</h5><ul>
+<li><p>比如可以对图像的变化包含一个单独的资源，在图片的旋转，切片等，建议使用同一组资源，然后在使用的时候定制它们。Android提供工具来改变资源的颜色，在5.0以上，可以是使用<code>android:tint</code> 和<code>tintMode</code>，而低版本可以使用<a href="https://developer.android.google.cn/reference/android/graphics/ColorFilter.html" target="_blank" rel="noopener">ColorFilter</a>类来实现。还可以通过旋转图片来达到资源的复用，比如下面的代码就是通过旋转180度，来达到『拇指向上』到『拇指向下』的转变</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml <span class="attribute">version</span>=<span class="string">"1.0"</span> <span class="attribute">encoding</span>=<span class="string">"utf-8"</span>?&gt;</span><br><span class="line">&lt;rotate xmlns:<span class="attribute">android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span><br><span class="line">  android:<span class="attribute">drawable</span>=<span class="string">"@drawable/ic_thumb_up"</span></span><br><span class="line">  android:<span class="attribute">pivotX</span>=<span class="string">"50%"</span></span><br><span class="line">  android:<span class="attribute">pivotY</span>=<span class="string">"50%"</span></span><br><span class="line">  android:<span class="attribute">fromDegrees</span>=<span class="string">"180"</span> /&gt;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h5 id="代码渲染"><a href="#代码渲染" class="headerlink" title="代码渲染"></a>代码渲染</h5><ul>
+<li>通过代码渲染来试图来节省图片的size，通过代码渲染就可以节省存储图片的空间。</li>
+</ul>
+<h5 id="压缩PNG文件"><a href="#压缩PNG文件" class="headerlink" title="压缩PNG文件"></a>压缩PNG文件</h5><ul>
+<li><p><code>aapt</code>在构建过程中可以优化和无损压缩放置在<code>res/drawable/</code>的图片资源，例如，<code>aapt</code>可以将不需要超过256色的真彩色PNG转换为具有调色板的8位PNG，这样可以相同质量的图片占更小的内存。但是<code>aapt</code>有以下几点局限：</p>
+<ul>
+<li>不能够压缩在<code>asset/</code>文件下的PNG文件</li>
+<li><code>aapt</code>优化图片文件需要256或者更少色</li>
+<li><p><code>aapt</code>可能会填充已经压缩的PNG文件，为了防止个问题，我们应该在<code>Gradle</code>配置中使用<code>cruncherEnabled</code>标志来防止此问题</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">aaptOptions</span> &#123;</span><br><span class="line"><span class="attribute">cruncherEnabled</span> = <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="压缩PNG和JPEG文"><a href="#压缩PNG和JPEG文" class="headerlink" title="压缩PNG和JPEG文"></a>压缩PNG和JPEG文</h5><ul>
+<li>可以使用<a href="http://pmt.sourceforge.net/pngcrush/" target="_blank" rel="noopener">pngcrush</a>, <a href="https://pngquant.org/" target="_blank" rel="noopener">pngquant</a>, or <a href="https://github.com/google/zopfli" target="_blank" rel="noopener">zopflipng</a>在无损的情况下减少PNG质量，<a href="http://pmt.sourceforge.net/pngcrush/" target="_blank" rel="noopener">pngcrush</a>是非常有效的，它遍历PNG过滤器和 zlib (Deflate)参数,使用每个组合的过滤器和参数来压缩图片，然后选择最好的压缩输出，而JPEG可以使用<a href="http://www.elektronik.htw-aalen.de/packjpg/" target="_blank" rel="noopener">packJPG</a>和<a href="https://github.com/google/guetzli" target="_blank" rel="noopener">guetzli</a></li>
+</ul>
+<h5 id="使用WebP文件格式"><a href="#使用WebP文件格式" class="headerlink" title="使用WebP文件格式"></a>使用<code>WebP</code>文件格式</h5><ul>
+<li><p>可以使用<code>WebP</code>格式来代替PNG和JPEG格式，当targeting超过3.2(API 13)，<code>WebP</code>可以提供有损压缩(JPEG)以及透明度(PNG)并且压缩效果要比PNG和JPEG效果好,所以可以使用<code>WebP</code>来代替BMP, JPG, PNG 和静态GIF文件在AS中，更多信息关于<code>WebP</code>可以看 <a href="https://developer.android.google.cn/studio/write/convert-webp.html" target="_blank" rel="noopener">Create WebP Images Using Android Studio</a></p>
+<p><strong>Google Play 只接受启动图标为PNG格式的APK</strong></p>
+</li>
+</ul>
+<h5 id="使用矢量图标"><a href="#使用矢量图标" class="headerlink" title="使用矢量图标"></a>使用矢量图标</h5><ul>
+<li>可以使用矢量图形创建独立于分辨率的图标和其他可伸缩的媒体。使用这些图标可以大大的减少APK的体积，矢量图标在Android中代表<a href="https://developer.android.google.cn/reference/android/graphics/drawable/VectorDrawable.html" target="_blank" rel="noopener">VectorDrawable</a>对象，一个<a href="https://developer.android.google.cn/reference/android/graphics/drawable/VectorDrawable.html" target="_blank" rel="noopener">VectorDrawable</a>对象只需使用100个字节大小就可以生成清晰的图像，但是系统在渲染<a href="https://developer.android.google.cn/reference/android/graphics/drawable/VectorDrawable.html" target="_blank" rel="noopener">VectorDrawable</a>对象时需要大量的时间，所以如果是一张大图，则在显示过程中会花费大量的时间，所以只推荐小图的时候使用矢量图标。更多关于使用<a href="https://developer.android.google.cn/reference/android/graphics/drawable/VectorDrawable.html" target="_blank" rel="noopener">VectorDrawable</a>对象的信息可以看 <a href="https://developer.android.google.cn/training/material/drawables.html" target="_blank" rel="noopener">Working with Drawables</a></li>
+</ul>
+<h5 id="使用矢量动画图像"><a href="#使用矢量动画图像" class="headerlink" title="使用矢量动画图像"></a>使用矢量动画图像</h5><ul>
+<li>千万不要使用<a href="https://developer.android.google.cn/reference/android/graphics/drawable/AnimationDrawable.html" target="_blank" rel="noopener">AnimationDrawable</a>对象来创建帧动画，因为它会需要每一帧的单独的图片文件，所以必定会增加你的APK大小。所以应该使用<a href="https://developer.android.google.cn/reference/android/support/graphics/drawable/AnimatedVectorDrawableCompat.html" target="_blank" rel="noopener">AnimatedVectorDrawableCompat</a>来创建<a href="https://developer.android.google.cn/training/material/animations.html#AnimVector" target="_blank" rel="noopener">animated vector drawables</a></li>
+</ul>
+<h3 id="减少本地和Java代码"><a href="#减少本地和Java代码" class="headerlink" title="减少本地和Java代码"></a>减少本地和Java代码</h3><h5 id="减少不必要的生成代"><a href="#减少不必要的生成代" class="headerlink" title="减少不必要的生成代"></a>减少不必要的生成代</h5><ul>
+<li>要了解自动生成的代码空间大小，例如，许多协议缓冲工具生成了大量的方法和类，可以将应用程序的大小增加一倍甚至更多。</li>
+</ul>
+<h5 id="避免枚举"><a href="#避免枚举" class="headerlink" title="避免枚举"></a>避免枚举</h5><ul>
+<li>一个枚举在应用程序class.dex文件中将会增加1-1.4kb，这些添加会很快的积累到复杂的系统和共享库中，如果可以考虑使用<code> @IntDef</code>注释和<a href="https://developer.android.google.cn/studio/build/shrink-code.html" target="_blank" rel="noopener">ProGuar</a>处理枚举代码转换为interger值，这样可以保证枚举类型的安全效益。</li>
+</ul>
+<h5 id="减少二进制文件的大小"><a href="#减少二进制文件的大小" class="headerlink" title="减少二进制文件的大小"></a>减少二进制文件的大小</h5><ul>
+<li>如果你的APP中有存在native代码和AndroidNDK代码，也可以通过优化你的代码来减少APP的size，所以可以通过下面2种方式来进行优化。<ul>
+<li>移除debug符号：当你在开发的时候使用debug符号是有意义的，Android NDK 提供<code>arm-eabi-strip</code>工具，用来去除native库中不必要的debug符号，在这之后在打release包。</li>
+<li>避免复制native库：<code>.so</code>文件在APK存储中是不能够被压缩的，在<a href="https://developer.android.google.cn/guide/topics/manifest/application-element.html" target="_blank" rel="noopener"><application> </application></a>元素中设置<code>android:extractNativeLibs</code>标记为false可以避免<a href="https://developer.android.google.cn/reference/android/content/pm/PackageManager.html" target="_blank" rel="noopener">PackManager</a>在应用安装时复制<code>.so</code>文件到文件系统并且还可以使应用程序增量更新更小</li>
+</ul>
+</li>
+</ul>
+<h3 id="维护多个精益的APK"><a href="#维护多个精益的APK" class="headerlink" title="维护多个精益的APK"></a>维护多个精益的APK</h3><ul>
+<li>你的APK可能有用户下载但是却没有使用的内容，像国家和语言信息，使用户能够有一个最小的下载，所以可以将APP分割成几个APK，比如不同的屏幕和GPU支持，当用户下载时，可以根据用户的型号，进行定制下载，下载用户需要的资源，而不需要的不下载，比如<code>hdpi</code>的设备，只需要<code>hdpi</code>资源，而不需要<code>xxxxhdpi</code>资源，所以就是不需要的资源，更多的信息可以查看<a href="https://developer.android.google.cn/studio/build/configure-apk-splits.html" target="_blank" rel="noopener">Configure APK Splits</a>和<a href="https://developer.android.google.cn/training/multiple-apks/index.html" target="_blank" rel="noopener">Maintaining Multiple APKs</a></li>
+</ul>
+<h5 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h5><ul>
+<li><a href="https://developer.android.google.cn/topic/performance/reduce-apk-size.html#multiple-apks" target="_blank" rel="noopener">https://developer.android.google.cn/topic/performance/reduce-apk-size.html#multiple-apks</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mrnoknow.github.io/2017/12/14/Reduce-APK-Size/" data-id="cjte069ao003ecyof5uleo4zz" class="article-share-link">Share</a>
+      
+        <a href="https://mrnoknow.github.io/2017/12/14/Reduce-APK-Size/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Android-4大组件特点" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/08/02/Android-4大组件特点/" class="article-date">
+  <time datetime="2017-08-02T04:37:43.000Z" itemprop="datePublished">2017-08-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/02/Android-4大组件特点/">Android 4大组件特点</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+-        <h4 id="Activity"><a href="#Activity" class="headerlink" title="Activity"></a>Activity</h4><ul>
+<li>Acitvity简单的理解为View</li>
+<li>Activity之间使用Intent进行通信</li>
+<li>在AndroidManifest文件进行配置申明</li>
+</ul>
+<h4 id="BoradcastReceiver"><a href="#BoradcastReceiver" class="headerlink" title="BoradcastReceiver"></a>BoradcastReceiver</h4><ul>
+<li>简单的理解为一个监听，对各个广播的监听</li>
+<li>两种注册方式：<ul>
+<li>静态：在AndroidManifest文件中注册，当设备启动并不关闭，这个BoradcastReceiver会一直存在，直到设备关闭。</li>
+<li>动态：在代码中注册，当注册的进程被干掉，这个BoradcastReceiver也被干掉</li>
+</ul>
+</li>
+<li>在onReceive()中不能进行耗时的操作，进行耗时操作时会导致ANR，如果需要耗时操作时，必须启动一个Service服务，不能够使用线程，因为BoradcastReceiver生命周期很短，当线程还没执行完操作，就会被干掉。</li>
+</ul>
+<h4 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h4><ul>
+<li>可以在后台进行一些耗时操作的服务</li>
+<li>两种启动方式：<ul>
+<li>startService()，一旦启动，必须在不使用的时候关闭，因为这个时候与启动它的组件无关，它可以在后台无限的运行，必须调用stopSelf()或者stopService()方法关闭它。</li>
+<li>bindService(),调用者与Service进行了绑定，所以会随着调用者的死亡而死亡，不求同年同月生，只求同年同月死的意思</li>
+</ul>
+</li>
+<li>在AndroidManifest文件进行配置申明</li>
+</ul>
+<h4 id="ContentProvider"><a href="#ContentProvider" class="headerlink" title="ContentProvider"></a>ContentProvider</h4><ul>
+<li>内容提供者，内容的共享，通过ContentProvider可以指定Android中可共享的数据，这些数据可以存储在任何合理的方式，其他应用可以通过此组件获取共享数据。</li>
+<li>需要内容共享才需要使用此组件。</li>
+<li>在AndroidManifest文件进行配置申明</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mrnoknow.github.io/2017/08/02/Android-4大组件特点/" data-id="cjte0698x0001cyofew4rkkg5" class="article-share-link">Share</a>
+      
+        <a href="https://mrnoknow.github.io/2017/08/02/Android-4大组件特点/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-多线程简单介绍" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/07/28/多线程简单介绍/" class="article-date">
+  <time datetime="2017-07-28T06:04:38.000Z" itemprop="datePublished">2017-07-28</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/JAVA/">JAVA</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/28/多线程简单介绍/">多线程简单介绍</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+-        <h4 id="Thread-与-Runnable的比较"><a href="#Thread-与-Runnable的比较" class="headerlink" title="Thread 与 Runnable的比较"></a>Thread 与 Runnable的比较</h4><ul>
+<li>Thread需要继承实现，而Java中是单继承，所以我一般不常用Thread，而是使用Runnable接口实现多线程</li>
+</ul>
+<h4 id="关于多线程的几个方法"><a href="#关于多线程的几个方法" class="headerlink" title="关于多线程的几个方法"></a>关于多线程的几个方法</h4><ul>
+<li>sleep()：让当前线程进入休眠状态（<strong>线程不会释放获得的锁</strong>），参数设置休眠时间。</li>
+<li><p>yield()：让步，让不低于自己优先级的线程有机会运行。（<strong>不会释放获取的锁</strong>）</p>
+</li>
+<li><p>interrupt()：终止哪些调用中断方法进入阻塞状态的线程。（<strong>sleep，wait，join都是中断方法</strong>）</p>
+</li>
+<li><p>join()： 当前线程对一个线程调用此方法，当前线程就会停止运行，直到另一个线程执行完成后，才会继续执行当前线程。（<strong>会释放获得的锁，join方法内部调用了wait方法</strong>）</p>
+</li>
+<li><p>wait()：此方法是object的实例方法，让当前线程进入阻塞状态。（<strong>释放获取对象的内部锁</strong>）可通过notify和notifyall来唤醒</p>
+</li>
+<li><p>notify()/notifyall()：是Object的实例方法，notify()是唤醒等待该对象的线程，而notifall()是唤醒所有等待的对象。</p>
+</li>
+</ul>
+<h4 id="synchronized关键字"><a href="#synchronized关键字" class="headerlink" title="synchronized关键字"></a>synchronized关键字</h4><ul>
+<li>Java中的每个对象都有一个内部锁，每个类都有一个锁，控制多线程对其静态成员的并发访问。如果一个实例方法使用synchronized关键字修饰，内部锁就会监听这个方法，只有获取到该对象内部锁的线程才能执行此方法。</li>
+<li>对象的内部锁在同一时刻只能由一个线程持有，其他线程尝试获取该对象内部锁都会被阻塞，这种情况下的阻塞不会被中断。</li>
+</ul>
+<h4 id="volatile域"><a href="#volatile域" class="headerlink" title="volatile域"></a>volatile域</h4><ul>
+<li>此关键字可以保证实例域是可见的，通常当我们访问内存中的变量时，就会把它缓存在寄存器中，当需要读这个值时，直接从寄存器拿取，进行加减运算时，直接将寄存器中的值进行加减运行，结束后将值写回内存，问题就出来了，对一个线程对flag变量进行操作，先将flag放进寄存器中，准备将它加上2，这个时候，另一个线程抢占了资源，对flag值进行操作，进行了加3的操作，并将flag写回了内存，这时，第一个线程对flag继续进行操作，对原来的flag值进行操作，加2，然后写回内存，当我们读取时就会发现，flag值为2，所以volatile就是为了解决该问题，就是每次访问变量时，直接从内存拿值，而不会从寄存器中获取。</li>
+</ul>
+<h5 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h5><ul>
+<li>Java核心技术点之多线程 <a href="http://www.cnblogs.com/absfree/p/5327678.html" target="_blank" rel="noopener">http://www.cnblogs.com/absfree/p/5327678.html</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://mrnoknow.github.io/2017/07/28/多线程简单介绍/" data-id="cjte0699r001hcyofrv9vhi4v" class="article-share-link">Share</a>
+      
+        <a href="https://mrnoknow.github.io/2017/07/28/多线程简单介绍/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/读书笔记/">读书笔记</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android/">Android</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/">JAVA</a><span class="category-list-count">7</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/JVM/">JVM</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JAVA/jsp/">jsp</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">4</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/git/Hexo/">Hexo</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/sql/">sql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/">虚拟机</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Mac/">Mac</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/虚拟机/Ubuntu-server/">Ubuntu server</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机系统/">计算机系统</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Coding/">Coding</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/other/">other</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/二进制编码/">二进制编码</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/读书笔记/">读书笔记</a><span class="tag-list-count">12</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Coding/" style="font-size: 13.33px;">Coding</a> <a href="/tags/other/" style="font-size: 20px;">other</a> <a href="/tags/二进制编码/" style="font-size: 10px;">二进制编码</a> <a href="/tags/读书笔记/" style="font-size: 16.67px;">读书笔记</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/">August 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">July 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/01/19/Android-视频播放自定义布局/">Android 视频播放自定义布局</a>
+          </li>
+        
+          <li>
+            <a href="/2017/12/14/Reduce-APK-Size/">Reduce APK Size</a>
+          </li>
+        
+          <li>
+            <a href="/2017/08/02/Android-4大组件特点/">Android 4大组件特点</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/28/多线程简单介绍/">多线程简单介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2017/07/20/RecyclerView简单复用适配器的实现/">RecyclerView简单复用适配器的实现</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 Fun&#39;s biog<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'fun-7';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
